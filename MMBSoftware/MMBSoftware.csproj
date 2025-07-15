@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Icons\armazem.png" />
+    <None Remove="Resources\Icons\clientes.png" />
+    <None Remove="Resources\Icons\clients16.png" />
+    <None Remove="Resources\Icons\clients32.png" />
+    <None Remove="Resources\Icons\home.png" />
+    <None Remove="Resources\Icons\menu.png" />
+    <None Remove="Resources\Icons\product16.png" />
+    <None Remove="Resources\Icons\relatorios.png" />
+    <None Remove="Resources\Icons\stock16.png" />
+    <None Remove="Resources\Icons\stock32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="9.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\armazem.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\clientes.png" />
+    <Resource Include="Resources\Icons\clients16.png" />
+    <Resource Include="Resources\Icons\clients32.png" />
+    <Resource Include="Resources\Icons\home.png" />
+    <Resource Include="Resources\Icons\menu.png" />
+    <Resource Include="Resources\Icons\product16.png" />
+    <Resource Include="Resources\Icons\relatorios.png" />
+    <Resource Include="Resources\Icons\stock16.png" />
+    <Resource Include="Resources\Icons\stock32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
