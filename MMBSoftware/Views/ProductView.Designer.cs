@@ -40,6 +40,7 @@
             txtSearchPd = new TextBox();
             dataGridViewProducts = new DataGridView();
             tabDetailPd = new TabPage();
+            tabPdDetailTitle = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             panel2 = new Panel();
             txtFieldName = new TextBox();
@@ -83,10 +84,10 @@
             // 
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             label1.AutoSize = true;
-            label1.Font = new Font("Ebrima", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Calibri", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(12, 27);
             label1.Name = "label1";
-            label1.Size = new Size(167, 38);
+            label1.Size = new Size(157, 37);
             label1.TabIndex = 0;
             label1.Text = "PRODUTOS";
             label1.TextAlign = ContentAlignment.MiddleLeft;
@@ -96,7 +97,7 @@
             tabControl1.Controls.Add(tabListPd);
             tabControl1.Controls.Add(tabDetailPd);
             tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tabControl1.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tabControl1.Location = new Point(0, 89);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
@@ -113,17 +114,18 @@
             tabListPd.Controls.Add(label2);
             tabListPd.Controls.Add(txtSearchPd);
             tabListPd.Controls.Add(dataGridViewProducts);
-            tabListPd.Location = new Point(4, 37);
+            tabListPd.Location = new Point(4, 33);
             tabListPd.Name = "tabListPd";
             tabListPd.Padding = new Padding(3);
-            tabListPd.Size = new Size(1021, 560);
+            tabListPd.Size = new Size(1021, 564);
             tabListPd.TabIndex = 0;
             tabListPd.Text = "Lista de Produtos";
             // 
             // btnDel
             // 
+            btnDel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDel.BackColor = Color.Transparent;
-            btnDel.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnDel.Font = new Font("Calibri", 12F);
             btnDel.ForeColor = SystemColors.ControlText;
             btnDel.ImageAlign = ContentAlignment.BottomCenter;
             btnDel.Location = new Point(861, 194);
@@ -135,8 +137,9 @@
             // 
             // btnEdit
             // 
+            btnEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnEdit.BackColor = Color.Transparent;
-            btnEdit.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnEdit.Font = new Font("Calibri", 12F);
             btnEdit.ForeColor = SystemColors.ControlText;
             btnEdit.ImageAlign = ContentAlignment.BottomCenter;
             btnEdit.Location = new Point(861, 152);
@@ -148,8 +151,9 @@
             // 
             // btnAdd
             // 
+            btnAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAdd.BackColor = Color.Transparent;
-            btnAdd.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAdd.Font = new Font("Calibri", 12F);
             btnAdd.ForeColor = SystemColors.ControlText;
             btnAdd.ImageAlign = ContentAlignment.BottomCenter;
             btnAdd.Location = new Point(861, 110);
@@ -161,8 +165,9 @@
             // 
             // btnSearch
             // 
+            btnSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSearch.BackColor = Color.Transparent;
-            btnSearch.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSearch.Font = new Font("Calibri", 12F);
             btnSearch.ForeColor = SystemColors.ControlText;
             btnSearch.ImageAlign = ContentAlignment.BottomCenter;
             btnSearch.Location = new Point(731, 58);
@@ -184,6 +189,7 @@
             // 
             // txtSearchPd
             // 
+            txtSearchPd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSearchPd.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSearchPd.Location = new Point(19, 58);
             txtSearchPd.Name = "txtSearchPd";
@@ -192,23 +198,39 @@
             // 
             // dataGridViewProducts
             // 
+            dataGridViewProducts.AllowUserToAddRows = false;
+            dataGridViewProducts.AllowUserToDeleteRows = false;
+            dataGridViewProducts.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewProducts.Location = new Point(19, 110);
             dataGridViewProducts.Name = "dataGridViewProducts";
+            dataGridViewProducts.ReadOnly = true;
             dataGridViewProducts.RowHeadersWidth = 51;
-            dataGridViewProducts.Size = new Size(836, 429);
+            dataGridViewProducts.Size = new Size(836, 433);
             dataGridViewProducts.TabIndex = 0;
             // 
             // tabDetailPd
             // 
+            tabDetailPd.Controls.Add(tabPdDetailTitle);
             tabDetailPd.Controls.Add(flowLayoutPanel1);
-            tabDetailPd.Location = new Point(4, 37);
+            tabDetailPd.Location = new Point(4, 33);
             tabDetailPd.Name = "tabDetailPd";
             tabDetailPd.Padding = new Padding(3);
-            tabDetailPd.Size = new Size(1021, 560);
+            tabDetailPd.Size = new Size(1021, 564);
             tabDetailPd.TabIndex = 1;
             tabDetailPd.Text = "Detalhes do Produto";
             tabDetailPd.UseVisualStyleBackColor = true;
+            // 
+            // tabPdDetailTitle
+            // 
+            tabPdDetailTitle.AutoSize = true;
+            tabPdDetailTitle.Font = new Font("Calibri", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tabPdDetailTitle.Location = new Point(26, 12);
+            tabPdDetailTitle.Name = "tabPdDetailTitle";
+            tabPdDetailTitle.Size = new Size(135, 37);
+            tabPdDetailTitle.TabIndex = 1;
+            tabPdDetailTitle.Text = "Title here";
             // 
             // flowLayoutPanel1
             // 
@@ -216,7 +238,7 @@
             flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Controls.Add(panel4);
             flowLayoutPanel1.Controls.Add(panel5);
-            flowLayoutPanel1.Location = new Point(0, 0);
+            flowLayoutPanel1.Location = new Point(0, 61);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(613, 454);
             flowLayoutPanel1.TabIndex = 0;
@@ -256,8 +278,10 @@
             txtFieldId.Font = new Font("Ebrima", 12F);
             txtFieldId.Location = new Point(26, 71);
             txtFieldId.Name = "txtFieldId";
+            txtFieldId.ReadOnly = true;
             txtFieldId.Size = new Size(125, 35);
             txtFieldId.TabIndex = 2;
+            txtFieldId.Text = "0";
             // 
             // label3
             // 
@@ -393,6 +417,7 @@
             tabListPd.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
             tabDetailPd.ResumeLayout(false);
+            tabDetailPd.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -435,5 +460,6 @@
         private Panel panel5;
         private Button btnDetailCancel;
         private Button btnDetailSave;
+        private Label tabPdDetailTitle;
     }
 }

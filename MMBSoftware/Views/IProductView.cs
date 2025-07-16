@@ -10,7 +10,7 @@ namespace MMBSoftware.Views
     {
         //Fields
         string ProductId { get; set; }
-        string Name { get; set; }
+        string PdName { get; set; }
         string Description { get; set; }
         string Price { get; set; }
         string Category { get; set; }

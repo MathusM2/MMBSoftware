@@ -17,15 +17,58 @@ namespace MMBSoftware.Repositories
         // Methods
         public void AddProduct(Product product)
         {
-            // Implementation for adding a product
+            var productList = new List<Product>();
+            decimal price = product.Price < 0 ? 0 : product.Price;
+            using (var connection = new MySqlConnection(connectionString))
+            using (var command = new MySqlCommand())
+            {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = @"INSERT INTO Product
+                                        (Product_Name, Product_Description, Product_Category, Product_Price)
+                                        VALUES (@name, @description, @category, @price) ";
+                command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product.Name;
+                command.Parameters.Add("@description", MySqlDbType.VarChar).Value = product.Description;
+                command.Parameters.Add("@category", MySqlDbType.VarChar).Value = product.Category;
+                command.Parameters.Add("@price", MySqlDbType.Decimal).Value = price;
+                var executer = command.ExecuteNonQuery();
+            }
         }
         public void UpdateProduct(Product product)
         {
-            // Implementation for updating a product
+            var productList = new List<Product>();
+            using (var connection = new MySqlConnection(connectionString))
+            using (var command = new MySqlCommand())
+            {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = @"UPDATE Product                                      
+                                        SET Product_Name = @name,
+                                            Product_Description = @description,
+                                            Product_Category = @category,
+                                            Product_Price = @price
+                                        WHERE (Product_Id = @id)";
+                command.Parameters.Add("@id", MySqlDbType.Int32).Value = product.Id;
+                command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product.Name;
+                command.Parameters.Add("@description", MySqlDbType.VarChar).Value = product.Description;
+                command.Parameters.Add("@category", MySqlDbType.VarChar).Value = product.Category;
+                command.Parameters.Add("@price", MySqlDbType.Decimal).Value = product.Price;
+                var executer = command.ExecuteNonQuery();
+            }
         }
-        public void DeleteProduct(int productId)
+        public void DeleteProduct(int Id)
         {
-            // Implementation for deleting a product
+            var productList = new List<Product>();
+            using (var connection = new MySqlConnection(connectionString))
+            using (var command = new MySqlCommand())
+            {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = @"DELETE FROM Product
+                                        WHERE Product_Id = @id";
+                command.Parameters.Add("@id", MySqlDbType.Int32).Value = Id;
+                command.ExecuteNonQuery();
+            }
         }
         public IEnumerable<Product> GetAll()
         {

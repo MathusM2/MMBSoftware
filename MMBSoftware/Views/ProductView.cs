@@ -27,6 +27,7 @@ namespace MMBSoftware.Views
 
         private void AssociateAndRaiseViewEvents()
         {
+            //Search
             btnSearch.Click += delegate { SearchEvent?.Invoke(this, EventArgs.Empty); };
             txtSearchPd.KeyDown += (s, e) =>
             {
@@ -35,7 +36,50 @@ namespace MMBSoftware.Views
                     SearchEvent?.Invoke(this, EventArgs.Empty);
                 }
             };
-            // Others
+            //Add
+            btnAdd.Click += delegate { 
+                AddEvent?.Invoke(this, EventArgs.Empty);  
+                tabControl1.TabPages.Remove(tabListPd);
+                tabControl1.TabPages.Add(tabDetailPd);
+                tabPdDetailTitle.Text = "Add New Product";
+            };
+            //Edit
+            btnEdit.Click += delegate {
+                EditEvent?.Invoke(this, EventArgs.Empty);
+                tabControl1.TabPages.Remove(tabListPd);
+                tabControl1.TabPages.Add(tabDetailPd);
+                tabPdDetailTitle.Text = "Edit Product";
+            };
+            //Save
+            btnDetailSave.Click += delegate
+            {
+                SaveEvent?.Invoke(this, EventArgs.Empty);
+                if(IsSuccessful)
+                {
+                    tabControl1.TabPages.Remove(tabDetailPd);
+                    tabControl1.TabPages.Add(tabListPd);
+                    //Adicionar logica de validação e sucesso
+                }
+            };
+            //Cancel
+            btnDetailCancel.Click += delegate { 
+                CancelEvent?.Invoke(this, EventArgs.Empty);
+                tabControl1.TabPages.Remove(tabDetailPd);
+                tabControl1.TabPages.Add(tabListPd);
+            };
+            //Delete
+            btnDel.Click += delegate {
+                var result = MessageBox.Show("Você quer mesmo deletar este item?","Alerta", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    DeleteEvent?.Invoke(this, EventArgs.Empty);
+                    //Adicionar Logica de resultado
+                }
+                else
+                {
+                    MessageBox.Show("Ação cancelada.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
         }
 
         // Properties
@@ -45,6 +89,14 @@ namespace MMBSoftware.Views
             set
             {
                 txtFieldId.Text = value;
+            }
+        }
+        public string PdName
+        {
+            get { return txtFieldName.Text; }
+            set
+            {
+                txtFieldName.Text = value;
             }
         }
         public string Description 
