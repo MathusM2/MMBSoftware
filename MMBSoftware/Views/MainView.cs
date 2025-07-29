@@ -8,6 +8,7 @@ namespace MMBSoftware
         {
             InitializeComponent();
             sbBtnProduct.Click += delegate { ShowProductView?.Invoke(this, EventArgs.Empty); };
+            sbBtnStock.Click += delegate { ShowStockView?.Invoke(this, EventArgs.Empty); };
         }
 
         public event EventHandler ShowProductView;

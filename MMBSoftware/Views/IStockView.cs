@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace MMBSoftware.Views
 {
-    public interface IProductView
+    public interface IStockView
     {
-        //Fields
+        string Id { get; set; }
+        string SelectedProduct { get; set; }
         string ProductId { get; set; }
         string PdName { get; set; }
-        string Description { get; set; }
-        string Price { get; set; }
-        string Category { get; set; }
+        string Quantity { get; set; }
+        string EntryDate { get; set; }
         string SearchValue { get; set; }
         bool IsEdit { get; set; }
         bool IsSuccessful { get; set; }
         string Message { get; set; }
 
-        //Events
+        // Events
         event EventHandler AddEvent;
         event EventHandler EditEvent;
-        event EventHandler DeleteEvent;
-        event EventHandler SearchEvent;
         event EventHandler SaveEvent;
+        event EventHandler SelectedProductEvent;
         event EventHandler CancelEvent;
+        event EventHandler SearchEvent;
+        event EventHandler DeleteEvent;
 
-        //Methods
-        void SetProductListBindingSource(BindingSource productList);
-        void SetCategoryListBindingSource(BindingSource categoryList);
+        void setStockListBindingSource(BindingSource stockList);
+        void setSelectedProductListBindingSource(BindingSource selectedProductList);
         void Show();
     }
 }

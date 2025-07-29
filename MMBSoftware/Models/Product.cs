@@ -20,32 +20,32 @@ namespace MMBSoftware.Models
 
 
         //Properties
-        [DisplayName("Product ID")]
+        [DisplayName("ID")]
         public int Id
         {
             get { return _id; }
             set { _id = value; }
         }
 
-        [DisplayName("Product Name")]
-        [Required(ErrorMessage = "Product name is required.")]
-        [StringLength(100, ErrorMessage = "Product name cannot exceed 100 characters.")]
+        [DisplayName("Nome")]
+        [Required(ErrorMessage = "O nome do produto é necessário!")]
+        [StringLength(100, ErrorMessage = "O nome do produto não pode exceder 100 caracteres")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
 
-        [DisplayName("Product Description")]
-        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
+        [DisplayName("Descrição")]
+        [StringLength(500, ErrorMessage = "Descrição do produto não pode exceder 500 caracteres")]
         public string Description
         {
             get { return _description; }
             set { _description = value; }
         }
 
-        [DisplayName("Product Price")]
-        [Required(ErrorMessage = "Product price is required.")]
+        [DisplayName("Preço")]
+        [Required(ErrorMessage = "O preço do produto é necessário")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be a positive value.")]
         public decimal Price
         {
@@ -53,8 +53,8 @@ namespace MMBSoftware.Models
             set { _price = value; }
         }
 
-        [DisplayName("Product Category")]
-        [Required(ErrorMessage = "Product category is required.")]
+        [DisplayName("Categoria")]
+        [Required(ErrorMessage = "A categoria do produto é necessário!")]
         [StringLength(50, ErrorMessage = "Category cannot exceed 50 characters.")]
         public string Category
         {

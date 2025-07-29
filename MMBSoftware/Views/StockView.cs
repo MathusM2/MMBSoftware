@@ -10,45 +10,62 @@ using System.Windows.Forms;
 
 namespace MMBSoftware.Views
 {
-    public partial class ProductView : Form, IProductView
+    public partial class StockView : Form, IStockView
     {
+
         // Fields
         private bool _isEdit;
         private bool _isSuccessful;
         private string _message;
 
-        // Constructor
-        public ProductView()
+        //Constructor
+        public StockView()
         {
             InitializeComponent();
             AssociateAndRaiseViewEvents();
-            tabControl1.TabPages.Remove(tabDetailPd);
-            cbFieldCategory.Text = "Select Category";
+            tabControl1.TabPages.Remove(tabStockProduct);
         }
 
         private void AssociateAndRaiseViewEvents()
         {
-            
             //Add
-            btnAdd.Click += delegate { 
-                tabControl1.TabPages.Remove(tabListPd);
-                tabControl1.TabPages.Add(tabDetailPd);
+            btnAdd.Click += delegate
+            {
+                tabControl1.TabPages.Remove(tabStockList);
+                tabControl1.TabPages.Add(tabStockProduct);
                 AddEvent?.Invoke(this, EventArgs.Empty);
-                tabPdDetailTitle.Text = "Add New Product";
+                tabPdDetailTitle.Text = "Add New Stock Product";
             };
+
+
             //Edit
-            btnEdit.Click += delegate {
-                tabControl1.TabPages.Remove(tabListPd);
-                tabControl1.TabPages.Add(tabDetailPd);
+            btnEdit.Click += delegate
+            {
+                tabControl1.TabPages.Remove(tabStockList);
+                tabControl1.TabPages.Add(tabStockProduct);
+                cbFieldProduct.MouseDown += (s, e) =>
+                {
+                    if (IsEdit)
+                        ((ComboBox)s).DroppedDown = false;
+                    else
+                        ((ComboBox)s).DroppedDown = true;
+                };
                 EditEvent?.Invoke(this, EventArgs.Empty);
-                tabPdDetailTitle.Text = "Edit Product";
+                tabPdDetailTitle.Text = "Edit Stock Product";
             };
 
             //Cancel
-            btnDetailCancel.Click += delegate {
+            btnDetailCancel.Click += delegate
+            {
                 CancelEvent?.Invoke(this, EventArgs.Empty);
-                tabControl1.TabPages.Remove(tabDetailPd);
-                tabControl1.TabPages.Add(tabListPd);
+                tabControl1.TabPages.Remove(tabStockProduct);
+                tabControl1.TabPages.Add(tabStockList);
+            };
+
+            //Selected Product
+            cbFieldProduct.SelectedIndexChanged += (s, e) =>
+            {
+                SelectedProductEvent?.Invoke(s, e);
             };
 
             //Save
@@ -57,10 +74,10 @@ namespace MMBSoftware.Views
                 btnDetailSave.Enabled = false;
                 SaveEvent?.Invoke(this, EventArgs.Empty);
                 await Task.Delay(1000);
-                if(IsSuccessful)
+                if (IsSuccessful)
                 {
-                    tabControl1.TabPages.Remove(tabDetailPd);
-                    tabControl1.TabPages.Add(tabListPd);
+                    tabControl1.TabPages.Remove(tabStockProduct);
+                    tabControl1.TabPages.Add(tabStockList);
                     MessageBox.Show(Message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     btnDetailSave.Enabled = true;
                 }
@@ -82,14 +99,14 @@ namespace MMBSoftware.Views
             };
 
             //Delete
-            btnDel.Click += async delegate 
+            btnDel.Click += async delegate
             {
-                var result = MessageBox.Show("Você quer mesmo deletar este item?","Alerta", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var result = MessageBox.Show("Você quer mesmo deletar este item?", "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
                     try
                     {
-                        DeleteEvent?.Invoke(this, EventArgs.Empty);
+                        DeleteEvent.Invoke(this, EventArgs.Empty);
 
                         await Task.Delay(300);
                         if (IsSuccessful)
@@ -103,110 +120,106 @@ namespace MMBSoftware.Views
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Falha ao excluir o registro do item, com o seguinte erro: \n {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        MessageBox.Show($"Erro ao deletar o item: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Ação cancelada.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Ação cancelada", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             };
         }
 
         // Properties
-        public string ProductId 
+        public string Id
         {
             get { return txtFieldId.Text; }
+            set { txtFieldId.Text = value; }
+        }
+
+        public string SelectedProduct
+        {
+            get { return cbFieldProduct.Text; }
             set
             {
-                txtFieldId.Text = value;
+                cbFieldProduct.SelectedIndex = cbFieldProduct.FindStringExact(value);
             }
+        }
+
+        public string ProductId 
+        {
+            get { return FieldPd_Id.Text; }
+            set { FieldPd_Id.Text = value; }
         }
         public string PdName
         {
-            get { return txtFieldName.Text; }
+            get { return FieldPd_Name.Text; }
+            set { FieldPd_Name.Text = value; }
+        }
+        public string Quantity
+        {
+            get { return txtFieldQuantity.Text; }
+            set { txtFieldQuantity.Text = value; }
+        }
+        public string EntryDate
+        {
+            get { return txtFieldDate.Text; }
             set
             {
-                txtFieldName.Text = value;
+                txtFieldDate.Text = value;
             }
         }
-        public string Description 
-        { 
-            get { return txtFieldDescription.Text; }
-            set
-            {
-                txtFieldDescription.Text = value;
-            }
-        }
-        public string Price 
-        { 
-            get { return txtFieldPrice.Text; }
-            set
-            {
-                txtFieldPrice.Text = value;
-            }
-        }
-        public string Category 
-        { 
-            get { return cbFieldCategory.Text; }
-            set
-            {
-                cbFieldCategory.SelectedIndex = cbFieldCategory.FindStringExact(value);
-            }
-        }
-        public string SearchValue 
+        public string SearchValue
         {
             get { return txtSearchPd.Text; }
-            set 
-            { 
-                txtSearchPd.Text = value; 
-            }
+            set { txtSearchPd.Text = value; }
         }
-        public bool IsEdit 
-        { 
+        public bool IsEdit
+        {
             get { return _isEdit; }
             set { _isEdit = value; }
         }
-        public bool IsSuccessful 
-        { 
+        public bool IsSuccessful
+        {
             get { return _isSuccessful; }
             set { _isSuccessful = value; }
         }
-        public string Message 
-        { 
+        public string Message
+        {
             get { return _message; }
             set { _message = value; }
         }
 
-        // Events
+        //Events
+
         public event EventHandler AddEvent;
         public event EventHandler EditEvent;
         public event EventHandler DeleteEvent;
-        public event EventHandler SearchEvent;
+        public event EventHandler SelectedProductEvent;
         public event EventHandler SaveEvent;
         public event EventHandler CancelEvent;
+        public event EventHandler SearchEvent;
+
 
         // Methods
-        public void SetProductListBindingSource(BindingSource productList)
+        public void setStockListBindingSource(BindingSource stockList)
         {
-            dataGridViewProducts.DataSource = productList;
+            dataGridStockList.DataSource = stockList;
         }
 
-        public void SetCategoryListBindingSource(BindingSource categoryList)
+        public void setSelectedProductListBindingSource(BindingSource selectedProductList)
         {
-            if(cbFieldCategory.DataSource != null) cbFieldCategory.DataSource = null; // Clear previous data source
-
-            cbFieldCategory.DataSource = categoryList;
+            cbFieldProduct.DataSource = selectedProductList;
         }
 
         // Singleton
-        private static ProductView instance;
-        public static ProductView GetInstance(Form parentContainer)
+        private static StockView instance;
+
+        public static StockView GetInstance(Form parentContainer)
         {
             if (instance == null || instance.IsDisposed)
             {
-                instance = new ProductView();
+                instance = new StockView();
                 instance.MdiParent = parentContainer;
                 instance.FormBorderStyle = FormBorderStyle.None;
                 instance.Dock = DockStyle.Fill;

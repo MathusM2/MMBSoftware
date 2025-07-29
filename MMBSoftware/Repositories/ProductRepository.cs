@@ -15,10 +15,9 @@ namespace MMBSoftware.Repositories
         }
 
         // Methods
-        public void AddProduct(Product product)
+        #region CRUD Operations
+        public async Task Add(Product product)
         {
-            var productList = new List<Product>();
-            decimal price = product.Price < 0 ? 0 : product.Price;
             using (var connection = new MySqlConnection(connectionString))
             using (var command = new MySqlCommand())
             {
@@ -30,17 +29,23 @@ namespace MMBSoftware.Repositories
                 command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product.Name;
                 command.Parameters.Add("@description", MySqlDbType.VarChar).Value = product.Description;
                 command.Parameters.Add("@category", MySqlDbType.VarChar).Value = product.Category;
-                command.Parameters.Add("@price", MySqlDbType.Decimal).Value = price;
-                var executer = command.ExecuteNonQuery();
+                command.Parameters.Add("@price", MySqlDbType.Decimal).Value = product.Price;
+                try
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch
+                {
+                    throw;
+                }
             }
         }
-        public void UpdateProduct(Product product)
+        public async Task Update(Product product)
         {
-            var productList = new List<Product>();
             using (var connection = new MySqlConnection(connectionString))
             using (var command = new MySqlCommand())
             {
-                connection.Open();
+                await connection.OpenAsync();
                 command.Connection = connection;
                 command.CommandText = @"UPDATE Product                                      
                                         SET Product_Name = @name,
@@ -53,12 +58,18 @@ namespace MMBSoftware.Repositories
                 command.Parameters.Add("@description", MySqlDbType.VarChar).Value = product.Description;
                 command.Parameters.Add("@category", MySqlDbType.VarChar).Value = product.Category;
                 command.Parameters.Add("@price", MySqlDbType.Decimal).Value = product.Price;
-                var executer = command.ExecuteNonQuery();
+                try
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (MySqlException)
+                {
+                    throw;
+                }
             }
         }
-        public void DeleteProduct(int Id)
+        public async Task Delete(int Id)
         {
-            var productList = new List<Product>();
             using (var connection = new MySqlConnection(connectionString))
             using (var command = new MySqlCommand())
             {
@@ -67,36 +78,50 @@ namespace MMBSoftware.Repositories
                 command.CommandText = @"DELETE FROM Product
                                         WHERE Product_Id = @id";
                 command.Parameters.Add("@id", MySqlDbType.Int32).Value = Id;
-                command.ExecuteNonQuery();
+                try
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
+                catch (MySqlException)
+                {
+                    throw;
+                }
             }
         }
-        public IEnumerable<Product> GetAll()
+        public async Task<IEnumerable<Product>> GetAll()
         {
-            var productList = new List<Product>();
-            using (var connection = new MySqlConnection(connectionString))
-            using (var command = new MySqlCommand())
+            try
             {
-                connection.Open();
-                command.Connection = connection;
-                command.CommandText = @"SELECT * FROM Product";
-                using (var reader = command.ExecuteReader())
+                using (var connection = new MySqlConnection(connectionString))
+                using (var command = new MySqlCommand())
                 {
-                    while (reader.Read())
+                    await connection.OpenAsync();
+                    command.Connection = connection;
+                    command.CommandText = @"SELECT * FROM Product";
+                    using (var reader = command.ExecuteReader())
                     {
-                        var productModel = new Product();
-                        productModel.Id = (int)reader[0];
-                        productModel.Name = reader[1].ToString();
-                        productModel.Description = reader[2].ToString();
-                        productModel.Category = reader[3].ToString();
-                        productModel.Price = (decimal)reader[4];
-                        productList.Add(productModel);
+                        var productList = new List<Product>();
+                        while (reader.Read())
+                        {
+                            var productModel = new Product();
+                            productModel.Id = (int)reader[0];
+                            productModel.Name = reader[1].ToString();
+                            productModel.Description = reader[2].ToString();
+                            productModel.Category = reader[3].ToString();
+                            productModel.Price = (decimal)reader[4];
+                            productList.Add(productModel);
+                        }
+
+                        return productList;
                     }
                 }
             }
-
-            return productList;
+            catch (MySqlException)
+            {
+                throw;
+            }
         }
-        public IEnumerable<Product> GetByValue(string value)
+        public async Task<IEnumerable<Product>> GetByValue(string value)
         {
             var productList = new List<Product>();
             int product_Id = int.TryParse(value, out _) ? Convert.ToInt32(value) : 0;
@@ -112,8 +137,10 @@ namespace MMBSoftware.Repositories
                                       ORDER BY Product_Id desc ";
                 command.Parameters.Add("@id", MySqlDbType.Int32).Value = product_Id;
                 command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product_Name + "%";
-                using (var reader = command.ExecuteReader())
+                try
                 {
+                    var reader = await command.ExecuteReaderAsync();
+
                     while (reader.Read())
                     {
                         var productModel = new Product();
@@ -123,21 +150,18 @@ namespace MMBSoftware.Repositories
                         productModel.Category = reader[3].ToString();
                         productModel.Price = (decimal)reader[4];
                         productList.Add(productModel);
+
                     }
+
+
+                    return productList;
+                }
+                catch (MySqlException)
+                {
+                    throw;
                 }
             }
-
-            return productList;
         }
-        public IEnumerable<Product> GetByCategory(string category)
-        {
-            // Implementation for getting products by category
-            return new List<Product>();
-        }
-        public IEnumerable<Product> GetByPriceRange(decimal minPrice, decimal maxPrice)
-        {
-            // Implementation for getting products by price range
-            return new List<Product>();
-        }
+        #endregion
     }
 }

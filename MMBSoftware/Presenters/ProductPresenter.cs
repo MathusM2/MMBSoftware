@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MMBSoftware.Models;
 using MMBSoftware.Presenters.Commom;
+using MMBSoftware.Services;
 using MMBSoftware.Views;
 
 namespace MMBSoftware.Presenters
@@ -13,16 +15,19 @@ namespace MMBSoftware.Presenters
     {
         // Fields
         private IProductView view;
-        private IProductRepository repository;
+        private IProductService serviceProduct;
         private BindingSource productBindingSource;
+        private BindingSource categoryBindingSource;
         private IEnumerable<Product> productList;
+        private IEnumerable<string> categoryList;
 
         // Constructor
-        public ProductPresenter(IProductView view, IProductRepository repository)
+        public ProductPresenter(IProductView view, IProductService serviceProduct)
         {
             this.productBindingSource = new BindingSource();
+            this.categoryBindingSource = new BindingSource();
             this.view = view;
-            this.repository = repository;
+            this.serviceProduct = serviceProduct;
             // Subscribe to view events
             this.view.SearchEvent += SearchProduct;
             this.view.AddEvent += AddNewProduct;
@@ -32,19 +37,24 @@ namespace MMBSoftware.Presenters
             this.view.CancelEvent += CancelAction;
             // Set product list binding source
             this.view.SetProductListBindingSource(productBindingSource);
-            // Load product list
-            LoadProductList();
+            this.view.SetCategoryListBindingSource(categoryBindingSource);
             // Show the view
             this.view.Show();
+            // Load product list
+            LoadProductList();
         }
 
-        // Methods
-        private void AddNewProduct(object? sender, EventArgs e)
+        //Methods
+        #region Methods for UI
+        private async void AddNewProduct(object? sender, EventArgs e)
         {
-            view.IsEdit = false; // Set the view to add mode
+            await Task.Delay(500);
+            view.IsEdit = false;
+            LoadCategoriesList();
         }
         private void LoadSelectedProductEdit(object? sender, EventArgs e)
         {
+            LoadCategoriesList();
             var productItem = (Product)productBindingSource.Current;
             if (productItem != null)
             {
@@ -56,8 +66,30 @@ namespace MMBSoftware.Presenters
                 view.IsEdit = true;
             }
         }
+        private void CancelAction(object? sender, EventArgs e)
+        {
+            CleanviewFields();
+            view.IsEdit = false;
+        }
 
-        private void SaveProduct(object? sender, EventArgs e)
+
+        private void CleanviewFields()
+        {
+            view.ProductId = string.Empty;
+            view.PdName = string.Empty;
+            view.Description = string.Empty;
+            view.Price = string.Empty;
+            view.Category = string.Empty;
+            LoadProductList();
+            LoadCategoriesList();
+        }
+
+        #endregion
+
+
+        #region Methods for Service and Validation Operations
+
+        private async void SaveProduct(object? sender, EventArgs e)
         {
             Product productModel = new Product();
             productModel.Id = int.TryParse(view.ProductId, out int id) ? id : 0;
@@ -69,71 +101,120 @@ namespace MMBSoftware.Presenters
             try
             {
                 new ModelDataValidation().Valite(productModel);
-                if (view.IsEdit)
+                try
                 {
-                    repository.UpdateProduct(productModel);
-                    view.Message = "Product edited successfuly.";
+                    if (view.IsEdit)
+                    {
+                        await serviceProduct.UpdateProduct(productModel);
+                        view.Message = "Produto atualizado com sucesso!";
+                    }
+                    else
+                    {
+                        await serviceProduct.CreateProduct(productModel);
+                        view.Message = "Produto adicionado com sucesso!";
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    repository.AddProduct(productModel);
-                    view.Message = "Product added successfully.";
+                    view.IsSuccessful = false;
+                    view.Message = $"Falha ao salvar o registro de estoque, com o seguinte erro:\n {ex.Message}";
                 }
+
                 view.IsSuccessful = true;
-                LoadProductList();
                 CleanviewFields();
+                LoadProductList();
             }
             catch (Exception ex)
             {
                 view.IsSuccessful = false;
-                view.Message = $"Error saving product: {ex.Message}";
-                MessageBox.Show(view.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                view.Message = $"Falha ao validar:\n {ex.Message}";
             }
         }
-
-
-        private void CancelAction(object? sender, EventArgs e)
-        {
-            CleanviewFields();
-            view.IsEdit = false; // Reset the edit mode
-        }
-
-        private void DeleteSelectedProduct(object? sender, EventArgs e)
+        
+        private async void DeleteSelectedProduct(object? sender, EventArgs e)
         {
             Product productModel = (Product)productBindingSource.Current;
+            if (productModel != null)
+            {
+                try
+                {
+                    await serviceProduct.DeleteProduct(productModel.Id);
+                    view.Message = "Registro de produto excluido com sucesso.!";
+                    view.IsSuccessful = true;
+                    LoadProductList();
+                }
+                catch (Exception ex)
+                {
+                    view.IsSuccessful = false;
+                    view.Message = $"Falha ao excluir o registro do item, com o seguinte erro: \n {ex.Message}";
+                }
+            }
+        }
+        private async void SearchProduct(object? sender, EventArgs e)
+        {
+            string searchValue = view.SearchValue;
+            bool EmptySearch = string.IsNullOrEmpty(view.SearchValue);
+            if (!EmptySearch) productList = int.TryParse(searchValue, out int productId)
+                ? serviceProduct.SearchProductsById(productId)
+                : serviceProduct.SearchProductsByTerm(searchValue);
+            else productList = await serviceProduct.GetAllProducts();
+            productBindingSource.DataSource = productList.ToList(); // Update the binding source
+        }
+
+        #endregion
+
+
+        #region Interface Methods for Loading Data
+
+        private async void LoadProductList()
+        {
             try
             {
-                repository.DeleteProduct(productModel.Id);
-                view.IsSuccessful = true;
-                view.Message = "Product deleted successfully";
-                LoadProductList();
+                productList = await serviceProduct.GetAllProducts();
+                productBindingSource.DataSource = null;
+                productBindingSource.DataSource = productList.ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 view.IsSuccessful = false;
-                view.Message = $"Error deleting product: {ex.Message}";
-                MessageBox.Show(view.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                view.Message = $"Erro ao carregar a lista:\n {ex.Message}";
             }
         }
-        private void CleanviewFields()
+        private void LoadCategoriesList()
         {
-            view.ProductId = string.Empty;
-            view.PdName = string.Empty;
-            view.Description = string.Empty;
-            view.Price = string.Empty;
-            view.Category = string.Empty;
+            try
+            {
+                categoryList = productList.Select(p => p.Category).Distinct();
+                categoryBindingSource.DataSource = null;
+                categoryBindingSource.DataSource = categoryList;
+            }
+            catch (Exception ex)
+            {
+                view.IsSuccessful = false;
+                view.Message = $"Erro ao carregar a lista de categorias:\n {ex.Message}";
+                MessageBox.Show(view.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
-        private void LoadProductList()
+        #endregion
+
+        // Singleton
+        private static ProductPresenter _instance;
+
+        public static ProductPresenter GetInstance(IProductView view, IProductService productService)
         {
-            productList = repository.GetAll();
-            productBindingSource.DataSource = productList.ToList();// Set source for the binding
-        }
-        private void SearchProduct(object? sender, EventArgs e)
-        {
-            bool EmptySearch = string.IsNullOrEmpty(view.SearchValue);
-            if (!EmptySearch) productList = repository.GetByValue(this.view.SearchValue);
-            else productList = repository.GetAll();
-            productBindingSource.DataSource = productList.ToList(); // Update the binding source
+            if (_instance == null)
+            {
+                _instance = new ProductPresenter(view, productService);
+            }
+            else
+            {
+                (view as Form).MdiParent = (_instance.view as Form)?.MdiParent;
+                _instance.CleanviewFields();
+            }
+
+            return _instance;
         }
     }
 }
+

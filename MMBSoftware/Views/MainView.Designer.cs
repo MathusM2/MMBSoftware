@@ -124,7 +124,7 @@ namespace MMBSoftware
             sbBtnClients.Name = "sbBtnClients";
             sbBtnClients.Size = new Size(190, 53);
             sbBtnClients.TabIndex = 16;
-            sbBtnClients.Text = "Clients";
+            sbBtnClients.Text = "Clientes";
             sbBtnClients.TextImageRelation = TextImageRelation.ImageBeforeText;
             sbBtnClients.UseVisualStyleBackColor = true;
             // 
@@ -141,7 +141,7 @@ namespace MMBSoftware
             sbBtnProduct.Name = "sbBtnProduct";
             sbBtnProduct.Size = new Size(190, 53);
             sbBtnProduct.TabIndex = 15;
-            sbBtnProduct.Text = "Products";
+            sbBtnProduct.Text = "Produtos";
             sbBtnProduct.TextImageRelation = TextImageRelation.ImageBeforeText;
             sbBtnProduct.UseVisualStyleBackColor = true;
             // 
@@ -158,7 +158,7 @@ namespace MMBSoftware
             sbBtnStock.Name = "sbBtnStock";
             sbBtnStock.Size = new Size(190, 53);
             sbBtnStock.TabIndex = 14;
-            sbBtnStock.Text = "Stock";
+            sbBtnStock.Text = "Estoque";
             sbBtnStock.TextImageRelation = TextImageRelation.ImageBeforeText;
             sbBtnStock.UseVisualStyleBackColor = true;
             // 
