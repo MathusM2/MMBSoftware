@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using MMBSoftware.Models;
+using MMBSoftware.Models.Enums;
 
 namespace MMBSoftware.Services
 {
@@ -98,6 +99,52 @@ namespace MMBSoftware.Services
                 {
                     return new List<Stock>();
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Stock> GetFilteredStocks(IFilter filter)
+        {
+            try
+            {
+                var query = _stocksList.AsQueryable();
+                if(filter.ExpirationFilter != null)
+                {
+                    if (filter.ExpirationFilter == true)
+                        query = query.Where(s => s.Expiry_Date < DateTime.Now);
+                    else
+                        query = query.Where(s => s.Expiry_Date >= DateTime.Now);
+                }
+
+                if(filter.SituationFilter != null)
+                {
+                    if (filter.SituationFilter == true)
+                        query = query.Where(s => s.Quantity > 0);
+                    else
+                        query = query.Where(s => s.Quantity <= 0);
+                }
+
+                if(filter.UnitType != null)
+                {
+                    if (filter.UnitType == UnitType.Unit)
+                    {
+                        query = query.Where(s => s.Unit_Type == UnitType.Unit);
+                    }
+                    else if (filter.UnitType == UnitType.Box)
+                    {
+                        query = query.Where(s => s.Unit_Type == UnitType.Box);
+                    }
+                    else if (filter.UnitType == UnitType.Package)
+                    {
+                        query = query.Where(s => s.Unit_Type == UnitType.Package);
+                    }
+
+                }
+
+                return query.ToList();
             }
             catch (Exception)
             {

@@ -15,42 +15,97 @@ namespace MMBSoftware.Presenters
     {
         //Fields
         private IMainView mainView;
-        private IProductRepository productRepository;
-        private IStockRepository stockRepository;
-
-        private string mySqlConnection;
+        
         private ProductPresenter _productPresenter;
         private StockPresenter _stockPresenter;
+        private CustomerPresenter _customerPresenter;
+        private HomePresenter _homePresenter;
 
-        public MainPresenter(IMainView mainView, string mySqlConnection)
+        private IProductService productService;
+        private IStockService stockService;
+        private ICustomerService customerService;
+
+        public MainPresenter(IMainView mainView, IProductService productService, IStockService stockService, ICustomerService customerService)
         {
             this.mainView = mainView;
-            this.mySqlConnection = mySqlConnection;
 
-            this.productRepository = new ProductRepository(this.mySqlConnection);
-            this.stockRepository = new StockRepository(this.mySqlConnection);
+            this.productService = productService;
+            this.stockService = stockService;
+            this.customerService = customerService;
+            
 
+            this.mainView.ShowHomeView += ShowHomeView;
             this.mainView.ShowProductView += ShowProductView;
             this.mainView.ShowStockView += ShowStockView;
+            this.mainView.ShowCustomerView += ShowCustomerView;
+            this.mainView.CloseMainView += CloseMainView;
+
+        }
+
+        //Methods
+        #region Methods
+
+        #region Show Views
+        private async void ShowHomeView(object? sender, EventArgs e)
+        {
+            try
+            {
+                IHomeView homeView = HomeView.GetInstance((MainView)mainView);
+                IHomeService homeService = new HomeService();
+                _homePresenter = HomePresenter.GetInstance(homeView, homeService);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao inicializar a aba dos produtos!\nCom o seguinte erro:\n{ex.Message}");
+            }
         }
 
         private async void ShowProductView(object? sender, EventArgs e)
         {
-            IProductView productView = ProductView.GetInstance((MainView)mainView);
-            IProductService productService = new ProductService(productRepository);
-
-            await productService.InitiaInitializeAsync();
-            _productPresenter = ProductPresenter.GetInstance(productView, productService);
+            try
+            {
+                IProductView productView = ProductView.GetInstance((MainView)mainView);
+                _productPresenter = ProductPresenter.GetInstance(productView, productService);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao inicializar a aba dos produtos!\nCom o seguinte erro:\n{ex.Message}");
+            }
         }
 
         private async void ShowStockView(object? sender, EventArgs e)
         {
-            IStockView stockView = StockView.GetInstance((MainView)mainView);
-            IProductService productService = new ProductService(productRepository);
-            IStockService stockService = new StockService(stockRepository);
-            
-            await productService.InitiaInitializeAsync();
-            _stockPresenter = StockPresenter.GetInstance(stockView, productService, stockService);
+            try
+            {
+                IStockView stockView = StockView.GetInstance((MainView)mainView);
+                _stockPresenter = StockPresenter.GetInstance(stockView, productService, stockService);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao inicializar a aba do estoque!\nCom o seguinte erro:\n{ex.Message}");
+            }
         }
+
+        private async void ShowCustomerView(object? sender, EventArgs e)
+        {
+            ICustomerView customerView = CustomerView.GetInstance((MainView)mainView);
+
+            try
+            {
+                await customerService.InitiaInitializeAsync();
+                _customerPresenter = new CustomerPresenter(customerView, customerService);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao inicializar a aba dos clientes!\nCom o seguinte erro:\n{ex.Message}");
+            }
+        }
+
+        private void CloseMainView(object? sender, EventArgs E)
+        {
+            (mainView as Form).Dispose();
+        }
+        #endregion
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MMBSoftware.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace MMBSoftware.Views
 
         //Events
         event EventHandler AddEvent;
+        event EventHandler<StringEventArgs> AddCategory;
         event EventHandler EditEvent;
         event EventHandler DeleteEvent;
         event EventHandler SearchEvent;
@@ -30,6 +32,7 @@ namespace MMBSoftware.Views
         //Methods
         void SetProductListBindingSource(BindingSource productList);
         void SetCategoryListBindingSource(BindingSource categoryList);
+        void ProductEventNewCategory_Handler(string nameCategory);
         void Show();
     }
 }

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MMBSoftware.Models;
+using MMBSoftware.Models.Enums;
 using MMBSoftware.Presenters.Commom;
 using MMBSoftware.Services;
 using MMBSoftware.Views;
@@ -41,14 +43,16 @@ namespace MMBSoftware.Presenters
             this.view.CancelEvent += CancelAction;
             this.view.SearchEvent += SearchStock;
             this.view.DeleteEvent += DeleteSelectedStock;
+            this.view.FilterEvent += FilterAction;
             // Set the stock list binding source
             this.view.setStockListBindingSource(stockBindingSource);
             this.view.setSelectedProductListBindingSource(selectedProductBindingSource);
             // Show the view
             this.view.Show();
             // Load the stock list
-            LoadStockList();
+            LoadStock();
         }
+
 
         //Methods
         #region Methods for UI
@@ -62,12 +66,14 @@ namespace MMBSoftware.Presenters
             var StockItem = (Stock)stockBindingSource.Current;
             if (StockItem != null)
             {
-                view.Id = StockItem.Id.ToString();
+                view.StockId = StockItem.Id.ToString();
                 view.SelectedProduct = StockItem.Product_Name;
                 view.ProductId = StockItem.ProductId.ToString();
                 view.PdName = StockItem.Product_Name;
                 view.Quantity = StockItem.Quantity.ToString();
+                view.UnitType = UnitTypeToStringExtensions.ToString(StockItem.Unit_Type);
                 view.EntryDate = StockItem.Entry_Date.ToString("yyyy-MM-dd");
+                view.ExpiryDate = StockItem.Expiry_Date.ToString("yyyy-MM-dd");
                 view.IsEdit = true;
 
             }
@@ -92,12 +98,24 @@ namespace MMBSoftware.Presenters
         }
         private void CleanviewFields()
         {
-            view.Id = string.Empty;
+            view.StockId = string.Empty;
             view.ProductId = string.Empty;
             view.PdName = string.Empty;
             view.Quantity = string.Empty;
+            view.UnitType = string.Empty;
             view.EntryDate = string.Empty;
+            view.ExpiryDate = string.Empty;
             view.IsEdit = false;
+        }
+        private void FilterAction(object? sender, EventArgs e)
+        {
+            if(view.StockFilter != null)
+            {
+                var filter = view.StockFilter;
+                MessageBox.Show("Opa! Filtrando dados...");
+                stockList = stockService.GetFilteredStocks(filter);
+                stockBindingSource.DataSource = stockList.ToList();
+            }
         }
 
         #endregion
@@ -107,11 +125,13 @@ namespace MMBSoftware.Presenters
         private async void SaveStock(object? sender, EventArgs e)
         {
             var stockModel = new Stock();
-            stockModel.Id = string.IsNullOrEmpty(view.Id) ? 0 : int.Parse(view.Id);
+            stockModel.Product_Name = string.IsNullOrEmpty(view.PdName) ? string.Empty : view.PdName;
+            stockModel.Quantity = string.IsNullOrEmpty(view.Quantity) ? 0: int.Parse(view.Quantity);
+            stockModel.Unit_Type = string.IsNullOrEmpty(view.UnitType) ? 0 : ToUnitTypeExtensions.StringToUnitType(view.UnitType);
+            stockModel.Entry_Date = DateTime.TryParseExact(view.EntryDate,"dd/MM/yyyy",CultureInfo.InvariantCulture,DateTimeStyles.None, out DateTime resultEnt) ? resultEnt : DateTime.Now;
+            stockModel.Expiry_Date = DateTime.TryParseExact(view.ExpiryDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime resultExp) ? resultExp : DateTime.Now;
+            stockModel.Id = string.IsNullOrEmpty(view.StockId) ? 0 : int.Parse(view.StockId);
             stockModel.ProductId = string.IsNullOrEmpty(view.ProductId) ? 0 : int.Parse(view.ProductId);
-            stockModel.Product_Name = view.PdName;
-            stockModel.Quantity = string.IsNullOrEmpty(view.Quantity) ? 0 : int.Parse(view.Quantity);
-            stockModel.Entry_Date = string.IsNullOrEmpty(view.EntryDate) ? DateTime.Now : DateTime.Parse(view.EntryDate).Date;
             try
             {
                 new ModelDataValidation().Valite(stockModel);
@@ -136,7 +156,7 @@ namespace MMBSoftware.Presenters
 
                 view.IsSuccessful = true;
                 CleanviewFields();
-                LoadStockList();
+                LoadStock();
             }
             catch (Exception ex)
             {
@@ -144,6 +164,7 @@ namespace MMBSoftware.Presenters
                 view.Message = $"Falha ao validar o registro de estoque: \n {ex.Message}";
             }
         }
+
         private async void DeleteSelectedStock(object? sender, EventArgs e)
         {
             var stockItem = (Stock)stockBindingSource.Current;
@@ -154,7 +175,7 @@ namespace MMBSoftware.Presenters
                     await stockService.DeleteStock(stockItem.Id);
                     view.Message = "Registro de estoque excluído com sucesso.";
                     view.IsSuccessful = true;
-                    LoadStockList();
+                    LoadStock();
                 }
                 catch (Exception ex)
                 {
@@ -174,23 +195,23 @@ namespace MMBSoftware.Presenters
             else stockList = await stockService.GetStocks();
             stockBindingSource.DataSource = stockList;
         }
-
         #endregion
 
 
         #region Interface Methods for Loading Data
-        private async void LoadStockList()
+        private async void LoadStock()
         {
             try
             {
                 stockList = await stockService.GetAllStocks();
                 stockBindingSource.DataSource = null;
                 stockBindingSource.DataSource = stockList.ToList();
+
+                productService.GetAllProducts();
             }
             catch (Exception ex)
             {
-                view.IsSuccessful = false;
-                view.Message = $"Falha ao carregar a lista de estoque, com o seguinte erro: \n {ex.Message}";
+                MessageBox.Show($"Falha ao carregar a lista de estoque, com o seguinte erro: \n {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void LoadSelectedProductList()
@@ -198,6 +219,7 @@ namespace MMBSoftware.Presenters
             try
             {
                 selectedProductList = productService.GetNamesFromCache();
+                selectedProductList = selectedProductList.Append("Selecione um produto").Reverse();
                 selectedProductBindingSource.DataSource = null;
                 selectedProductBindingSource.DataSource = selectedProductList;
             }
@@ -209,7 +231,6 @@ namespace MMBSoftware.Presenters
         }
 
         #endregion
-
 
         // Singleton
         private static StockPresenter _instance;
@@ -223,7 +244,6 @@ namespace MMBSoftware.Presenters
             else
             {
                 (view as Form).MdiParent = (_instance.view as Form)?.MdiParent;
-                _instance.CleanviewFields();
             }
 
             return _instance;

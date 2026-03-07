@@ -109,6 +109,7 @@ namespace MMBSoftware.Repositories
                             productModel.Description = reader[2].ToString();
                             productModel.Category = reader[3].ToString();
                             productModel.Price = (decimal)reader[4];
+
                             productList.Add(productModel);
                         }
 

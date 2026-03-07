@@ -31,73 +31,103 @@ namespace MMBSoftware
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             panel1 = new Panel();
+            label3 = new Label();
+            btnUser = new Button();
+            btnSidebar = new Button();
             label1 = new Label();
-            pictureBox1 = new PictureBox();
-            panel2 = new Panel();
+            sideBarPanel = new Panel();
             sbBtnLeave = new Button();
             sbBtnClients = new Button();
             sbBtnProduct = new Button();
             sbBtnStock = new Button();
             sbBtnHome = new Button();
             panel3 = new Panel();
-            label2 = new Label();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            panel2.SuspendLayout();
-            panel3.SuspendLayout();
+            sideBarPanel.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(108, 235, 108);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(btnUser);
+            panel1.Controls.Add(btnSidebar);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(pictureBox1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1099, 72);
             panel1.TabIndex = 0;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Calibri", 16.2F, FontStyle.Bold);
+            label3.Location = new Point(748, 23);
+            label3.Name = "label3";
+            label3.Size = new Size(248, 35);
+            label3.TabIndex = 4;
+            label3.Text = "Mini Mercado Brasil";
+            // 
+            // btnUser
+            // 
+            btnUser.Cursor = Cursors.Hand;
+            btnUser.Dock = DockStyle.Right;
+            btnUser.FlatAppearance.BorderSize = 0;
+            btnUser.FlatStyle = FlatStyle.Flat;
+            btnUser.Image = (Image)resources.GetObject("btnUser.Image");
+            btnUser.Location = new Point(1033, 0);
+            btnUser.Name = "btnUser";
+            btnUser.Size = new Size(66, 72);
+            btnUser.TabIndex = 19;
+            btnUser.UseVisualStyleBackColor = true;
+            btnUser.Click += btnUser_Click;
+            // 
+            // btnSidebar
+            // 
+            btnSidebar.Cursor = Cursors.Hand;
+            btnSidebar.FlatAppearance.BorderSize = 0;
+            btnSidebar.FlatStyle = FlatStyle.Flat;
+            btnSidebar.Image = (Image)resources.GetObject("btnSidebar.Image");
+            btnSidebar.Location = new Point(12, 20);
+            btnSidebar.Name = "btnSidebar";
+            btnSidebar.Size = new Size(40, 37);
+            btnSidebar.TabIndex = 18;
+            btnSidebar.UseVisualStyleBackColor = true;
+            btnSidebar.Click += btnSidebar_Click;
+            // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Calibri", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(6, 0, 19);
-            label1.Location = new Point(82, 18);
+            label1.Location = new Point(58, 20);
             label1.Name = "label1";
             label1.Size = new Size(153, 37);
             label1.TabIndex = 1;
             label1.Text = "Dashboard";
             // 
-            // pictureBox1
+            // sideBarPanel
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(3, 7);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(73, 62);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
-            // panel2
-            // 
-            panel2.BackColor = Color.FromArgb(202, 255, 202);
-            panel2.Controls.Add(sbBtnLeave);
-            panel2.Controls.Add(sbBtnClients);
-            panel2.Controls.Add(sbBtnProduct);
-            panel2.Controls.Add(sbBtnStock);
-            panel2.Controls.Add(sbBtnHome);
-            panel2.Controls.Add(panel3);
-            panel2.Dock = DockStyle.Left;
-            panel2.Location = new Point(0, 72);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(190, 567);
-            panel2.TabIndex = 2;
+            sideBarPanel.BackColor = Color.FromArgb(202, 255, 202);
+            sideBarPanel.Controls.Add(sbBtnLeave);
+            sideBarPanel.Controls.Add(sbBtnClients);
+            sideBarPanel.Controls.Add(sbBtnProduct);
+            sideBarPanel.Controls.Add(sbBtnStock);
+            sideBarPanel.Controls.Add(sbBtnHome);
+            sideBarPanel.Controls.Add(panel3);
+            sideBarPanel.Dock = DockStyle.Left;
+            sideBarPanel.Location = new Point(0, 72);
+            sideBarPanel.Name = "sideBarPanel";
+            sideBarPanel.Size = new Size(190, 567);
+            sideBarPanel.TabIndex = 2;
             // 
             // sbBtnLeave
             // 
+            sbBtnLeave.BackColor = Color.FromArgb(202, 255, 202);
             sbBtnLeave.Cursor = Cursors.Hand;
             sbBtnLeave.Dock = DockStyle.Bottom;
+            sbBtnLeave.FlatAppearance.BorderSize = 0;
             sbBtnLeave.FlatStyle = FlatStyle.Flat;
             sbBtnLeave.Font = new Font("Calibri", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             sbBtnLeave.ForeColor = Color.FromArgb(6, 0, 19);
@@ -109,18 +139,19 @@ namespace MMBSoftware
             sbBtnLeave.TabIndex = 17;
             sbBtnLeave.Text = "Sair";
             sbBtnLeave.TextImageRelation = TextImageRelation.ImageBeforeText;
-            sbBtnLeave.UseVisualStyleBackColor = true;
+            sbBtnLeave.UseVisualStyleBackColor = false;
             // 
             // sbBtnClients
             // 
             sbBtnClients.Cursor = Cursors.Hand;
             sbBtnClients.Dock = DockStyle.Top;
-            sbBtnClients.FlatStyle = FlatStyle.Popup;
+            sbBtnClients.FlatAppearance.BorderSize = 0;
+            sbBtnClients.FlatStyle = FlatStyle.Flat;
             sbBtnClients.Font = new Font("Calibri", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             sbBtnClients.ForeColor = Color.FromArgb(6, 0, 19);
             sbBtnClients.Image = (Image)resources.GetObject("sbBtnClients.Image");
             sbBtnClients.ImageAlign = ContentAlignment.MiddleLeft;
-            sbBtnClients.Location = new Point(0, 284);
+            sbBtnClients.Location = new Point(0, 244);
             sbBtnClients.Name = "sbBtnClients";
             sbBtnClients.Size = new Size(190, 53);
             sbBtnClients.TabIndex = 16;
@@ -132,12 +163,13 @@ namespace MMBSoftware
             // 
             sbBtnProduct.Cursor = Cursors.Hand;
             sbBtnProduct.Dock = DockStyle.Top;
-            sbBtnProduct.FlatStyle = FlatStyle.Popup;
+            sbBtnProduct.FlatAppearance.BorderSize = 0;
+            sbBtnProduct.FlatStyle = FlatStyle.Flat;
             sbBtnProduct.Font = new Font("Calibri", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             sbBtnProduct.ForeColor = Color.FromArgb(6, 0, 19);
             sbBtnProduct.Image = (Image)resources.GetObject("sbBtnProduct.Image");
             sbBtnProduct.ImageAlign = ContentAlignment.MiddleLeft;
-            sbBtnProduct.Location = new Point(0, 231);
+            sbBtnProduct.Location = new Point(0, 191);
             sbBtnProduct.Name = "sbBtnProduct";
             sbBtnProduct.Size = new Size(190, 53);
             sbBtnProduct.TabIndex = 15;
@@ -149,12 +181,14 @@ namespace MMBSoftware
             // 
             sbBtnStock.Cursor = Cursors.Hand;
             sbBtnStock.Dock = DockStyle.Top;
-            sbBtnStock.FlatStyle = FlatStyle.Popup;
+            sbBtnStock.FlatAppearance.BorderColor = SystemColors.Control;
+            sbBtnStock.FlatAppearance.BorderSize = 0;
+            sbBtnStock.FlatStyle = FlatStyle.Flat;
             sbBtnStock.Font = new Font("Calibri", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             sbBtnStock.ForeColor = Color.FromArgb(6, 0, 19);
             sbBtnStock.Image = (Image)resources.GetObject("sbBtnStock.Image");
             sbBtnStock.ImageAlign = ContentAlignment.MiddleLeft;
-            sbBtnStock.Location = new Point(0, 178);
+            sbBtnStock.Location = new Point(0, 138);
             sbBtnStock.Name = "sbBtnStock";
             sbBtnStock.Size = new Size(190, 53);
             sbBtnStock.TabIndex = 14;
@@ -166,12 +200,14 @@ namespace MMBSoftware
             // 
             sbBtnHome.Cursor = Cursors.Hand;
             sbBtnHome.Dock = DockStyle.Top;
-            sbBtnHome.FlatStyle = FlatStyle.Popup;
+            sbBtnHome.FlatAppearance.BorderColor = SystemColors.Control;
+            sbBtnHome.FlatAppearance.BorderSize = 0;
+            sbBtnHome.FlatStyle = FlatStyle.Flat;
             sbBtnHome.Font = new Font("Candara", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             sbBtnHome.ForeColor = Color.FromArgb(6, 0, 19);
             sbBtnHome.Image = (Image)resources.GetObject("sbBtnHome.Image");
             sbBtnHome.ImageAlign = ContentAlignment.MiddleLeft;
-            sbBtnHome.Location = new Point(0, 125);
+            sbBtnHome.Location = new Point(0, 85);
             sbBtnHome.Name = "sbBtnHome";
             sbBtnHome.Size = new Size(190, 53);
             sbBtnHome.TabIndex = 13;
@@ -182,30 +218,18 @@ namespace MMBSoftware
             // panel3
             // 
             panel3.BackColor = Color.Transparent;
-            panel3.Controls.Add(label2);
             panel3.Dock = DockStyle.Top;
             panel3.Location = new Point(0, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(190, 125);
+            panel3.Size = new Size(190, 85);
             panel3.TabIndex = 1;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Calibri", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.FromArgb(6, 0, 19);
-            label2.Location = new Point(23, 68);
-            label2.Name = "label2";
-            label2.Size = new Size(126, 35);
-            label2.TabIndex = 3;
-            label2.Text = "Text Here";
             // 
             // MainView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1099, 639);
-            Controls.Add(panel2);
+            Controls.Add(sideBarPanel);
             Controls.Add(panel1);
             IsMdiContainer = true;
             Name = "MainView";
@@ -213,25 +237,23 @@ namespace MMBSoftware
             WindowState = FormWindowState.Maximized;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            panel2.ResumeLayout(false);
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
+            sideBarPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private Panel panel1;
-        private PictureBox pictureBox1;
         private Label label1;
-        private Panel panel2;
+        private Panel sideBarPanel;
         private Panel panel3;
-        private Label label2;
         private Button sbBtnHome;
         private Button sbBtnClients;
         private Button sbBtnProduct;
         private Button sbBtnStock;
         private Button sbBtnLeave;
+        private Button btnSidebar;
+        private Button btnUser;
+        private Label label3;
     }
 }

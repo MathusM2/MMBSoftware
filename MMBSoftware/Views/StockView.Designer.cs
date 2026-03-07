@@ -32,6 +32,9 @@
             label1 = new Label();
             tabControl1 = new TabControl();
             tabStockList = new TabPage();
+            btnResetList = new Button();
+            btnFilter = new Button();
+            label9 = new Label();
             btnSearch = new Button();
             btnDel = new Button();
             btnEdit = new Button();
@@ -43,7 +46,11 @@
             tabPdDetailTitle = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             panel2 = new Panel();
-            txtFieldDate = new TextBox();
+            cbFieldTypeUnit = new ComboBox();
+            label11 = new Label();
+            txtFieldExpiryDate = new TextBox();
+            label10 = new Label();
+            txtFieldEntryDate = new TextBox();
             label8 = new Label();
             txtFieldQuantity = new TextBox();
             txtFieldId = new TextBox();
@@ -75,8 +82,9 @@
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1029, 97);
+            panel1.Size = new Size(968, 73);
             panel1.TabIndex = 0;
             // 
             // label1
@@ -84,9 +92,9 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             label1.AutoSize = true;
             label1.Font = new Font("Calibri", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(12, 31);
+            label1.Location = new Point(10, 23);
             label1.Name = "label1";
-            label1.Size = new Size(136, 37);
+            label1.Size = new Size(107, 29);
             label1.TabIndex = 1;
             label1.Text = "ESTOQUE";
             label1.TextAlign = ContentAlignment.MiddleLeft;
@@ -97,15 +105,19 @@
             tabControl1.Controls.Add(tabStockProduct);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tabControl1.Location = new Point(0, 97);
+            tabControl1.Location = new Point(0, 73);
+            tabControl1.Margin = new Padding(3, 2, 3, 2);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1029, 579);
+            tabControl1.Size = new Size(968, 476);
             tabControl1.TabIndex = 1;
             // 
             // tabStockList
             // 
             tabStockList.BackColor = Color.WhiteSmoke;
+            tabStockList.Controls.Add(btnResetList);
+            tabStockList.Controls.Add(btnFilter);
+            tabStockList.Controls.Add(label9);
             tabStockList.Controls.Add(btnSearch);
             tabStockList.Controls.Add(btnDel);
             tabStockList.Controls.Add(btnEdit);
@@ -114,12 +126,48 @@
             tabStockList.Controls.Add(txtSearchPd);
             tabStockList.Controls.Add(dataGridStockList);
             tabStockList.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tabStockList.Location = new Point(4, 33);
+            tabStockList.Location = new Point(4, 28);
+            tabStockList.Margin = new Padding(3, 2, 3, 2);
             tabStockList.Name = "tabStockList";
-            tabStockList.Padding = new Padding(3);
-            tabStockList.Size = new Size(1021, 542);
+            tabStockList.Padding = new Padding(3, 2, 3, 2);
+            tabStockList.Size = new Size(960, 444);
             tabStockList.TabIndex = 0;
             tabStockList.Text = "Lista do Estoque";
+            // 
+            // btnResetList
+            // 
+            btnResetList.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnResetList.Location = new Point(639, 375);
+            btnResetList.Margin = new Padding(3, 2, 3, 2);
+            btnResetList.Name = "btnResetList";
+            btnResetList.Size = new Size(31, 26);
+            btnResetList.TabIndex = 16;
+            btnResetList.Text = ">";
+            btnResetList.UseVisualStyleBackColor = true;
+            btnResetList.Click += btnResetList_Click;
+            // 
+            // btnFilter
+            // 
+            btnFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFilter.Location = new Point(702, 93);
+            btnFilter.Margin = new Padding(3, 2, 3, 2);
+            btnFilter.Name = "btnFilter";
+            btnFilter.Size = new Size(25, 21);
+            btnFilter.TabIndex = 15;
+            btnFilter.Text = ">";
+            btnFilter.UseVisualStyleBackColor = true;
+            btnFilter.Click += button1_Click;
+            // 
+            // label9
+            // 
+            label9.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label9.AutoSize = true;
+            label9.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label9.Location = new Point(639, 92);
+            label9.Name = "label9";
+            label9.Size = new Size(53, 21);
+            label9.TabIndex = 14;
+            label9.Text = "Filtros";
             // 
             // btnSearch
             // 
@@ -128,72 +176,78 @@
             btnSearch.Font = new Font("Calibri", 12F);
             btnSearch.ForeColor = SystemColors.ControlText;
             btnSearch.ImageAlign = ContentAlignment.BottomCenter;
-            btnSearch.Location = new Point(712, 59);
+            btnSearch.Location = new Point(639, 136);
+            btnSearch.Margin = new Padding(3, 2, 3, 2);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(124, 36);
+            btnSearch.Size = new Size(108, 27);
             btnSearch.TabIndex = 12;
             btnSearch.Text = "Pesquisar";
             btnSearch.UseVisualStyleBackColor = false;
             // 
             // btnDel
             // 
-            btnDel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDel.BackColor = Color.Transparent;
             btnDel.Font = new Font("Calibri", 12F);
             btnDel.ForeColor = SystemColors.ControlText;
             btnDel.ImageAlign = ContentAlignment.BottomCenter;
-            btnDel.Location = new Point(842, 189);
+            btnDel.Location = new Point(273, 405);
+            btnDel.Margin = new Padding(3, 2, 3, 2);
             btnDel.Name = "btnDel";
-            btnDel.Size = new Size(141, 36);
+            btnDel.Size = new Size(123, 27);
             btnDel.TabIndex = 11;
             btnDel.Text = "Deletar";
             btnDel.UseVisualStyleBackColor = false;
             // 
             // btnEdit
             // 
-            btnEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.BackColor = Color.Transparent;
             btnEdit.Font = new Font("Calibri", 12F);
             btnEdit.ForeColor = SystemColors.ControlText;
             btnEdit.ImageAlign = ContentAlignment.BottomCenter;
-            btnEdit.Location = new Point(842, 147);
+            btnEdit.Location = new Point(144, 405);
+            btnEdit.Margin = new Padding(3, 2, 3, 2);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(141, 36);
+            btnEdit.Size = new Size(123, 27);
             btnEdit.TabIndex = 10;
             btnEdit.Text = "Editar";
             btnEdit.UseVisualStyleBackColor = false;
             // 
             // btnAdd
             // 
-            btnAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.BackColor = Color.Transparent;
             btnAdd.Font = new Font("Calibri", 12F);
             btnAdd.ForeColor = SystemColors.ControlText;
             btnAdd.ImageAlign = ContentAlignment.BottomCenter;
-            btnAdd.Location = new Point(842, 105);
+            btnAdd.Location = new Point(16, 405);
+            btnAdd.Margin = new Padding(3, 2, 3, 2);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(141, 36);
+            btnAdd.Size = new Size(123, 27);
             btnAdd.TabIndex = 9;
             btnAdd.Text = "Adicionar";
             btnAdd.UseVisualStyleBackColor = false;
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(18, 31);
+            label2.Location = new Point(639, 34);
             label2.Name = "label2";
-            label2.Size = new Size(197, 28);
+            label2.Size = new Size(158, 21);
             label2.TabIndex = 5;
             label2.Text = "Pesquisar no estoque";
             // 
             // txtSearchPd
             // 
-            txtSearchPd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSearchPd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             txtSearchPd.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearchPd.Location = new Point(18, 60);
+            txtSearchPd.Location = new Point(639, 58);
+            txtSearchPd.Margin = new Padding(3, 2, 3, 2);
             txtSearchPd.Name = "txtSearchPd";
-            txtSearchPd.Size = new Size(688, 35);
+            txtSearchPd.Size = new Size(230, 29);
             txtSearchPd.TabIndex = 3;
             // 
             // dataGridStockList
@@ -203,20 +257,23 @@
             dataGridStockList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridStockList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridStockList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridStockList.Location = new Point(18, 105);
+            dataGridStockList.Location = new Point(16, 34);
+            dataGridStockList.Margin = new Padding(3, 2, 3, 2);
             dataGridStockList.Name = "dataGridStockList";
+            dataGridStockList.ReadOnly = true;
             dataGridStockList.RowHeadersWidth = 51;
-            dataGridStockList.Size = new Size(818, 421);
+            dataGridStockList.Size = new Size(618, 366);
             dataGridStockList.TabIndex = 2;
             // 
             // tabStockProduct
             // 
             tabStockProduct.Controls.Add(tabPdDetailTitle);
             tabStockProduct.Controls.Add(flowLayoutPanel1);
-            tabStockProduct.Location = new Point(4, 33);
+            tabStockProduct.Location = new Point(4, 28);
+            tabStockProduct.Margin = new Padding(3, 2, 3, 2);
             tabStockProduct.Name = "tabStockProduct";
-            tabStockProduct.Padding = new Padding(3);
-            tabStockProduct.Size = new Size(1089, 542);
+            tabStockProduct.Padding = new Padding(3, 2, 3, 2);
+            tabStockProduct.Size = new Size(960, 444);
             tabStockProduct.TabIndex = 1;
             tabStockProduct.Text = "Produto em estoque";
             tabStockProduct.UseVisualStyleBackColor = true;
@@ -225,9 +282,9 @@
             // 
             tabPdDetailTitle.AutoSize = true;
             tabPdDetailTitle.Font = new Font("Calibri", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            tabPdDetailTitle.Location = new Point(34, 15);
+            tabPdDetailTitle.Location = new Point(30, 11);
             tabPdDetailTitle.Name = "tabPdDetailTitle";
-            tabPdDetailTitle.Size = new Size(135, 37);
+            tabPdDetailTitle.Size = new Size(108, 29);
             tabPdDetailTitle.TabIndex = 3;
             tabPdDetailTitle.Text = "Title here";
             // 
@@ -236,58 +293,108 @@
             flowLayoutPanel1.Controls.Add(panel2);
             flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Controls.Add(panel5);
-            flowLayoutPanel1.Location = new Point(8, 64);
+            flowLayoutPanel1.Location = new Point(7, 48);
+            flowLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(613, 433);
+            flowLayoutPanel1.Size = new Size(600, 325);
             flowLayoutPanel1.TabIndex = 2;
             // 
             // panel2
             // 
-            panel2.Controls.Add(txtFieldDate);
+            panel2.Controls.Add(cbFieldTypeUnit);
+            panel2.Controls.Add(label11);
+            panel2.Controls.Add(txtFieldExpiryDate);
+            panel2.Controls.Add(label10);
+            panel2.Controls.Add(txtFieldEntryDate);
             panel2.Controls.Add(label8);
             panel2.Controls.Add(txtFieldQuantity);
             panel2.Controls.Add(txtFieldId);
             panel2.Controls.Add(label7);
             panel2.Controls.Add(label3);
-            panel2.Location = new Point(3, 3);
+            panel2.Location = new Point(3, 2);
+            panel2.Margin = new Padding(3, 2, 3, 2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(299, 314);
+            panel2.Size = new Size(287, 249);
             panel2.TabIndex = 1;
             // 
-            // txtFieldDate
+            // cbFieldTypeUnit
             // 
-            txtFieldDate.Font = new Font("Ebrima", 12F);
-            txtFieldDate.Location = new Point(23, 209);
-            txtFieldDate.Name = "txtFieldDate";
-            txtFieldDate.Size = new Size(152, 35);
-            txtFieldDate.TabIndex = 7;
+            cbFieldTypeUnit.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cbFieldTypeUnit.FormattingEnabled = true;
+            cbFieldTypeUnit.Location = new Point(153, 92);
+            cbFieldTypeUnit.Margin = new Padding(3, 2, 3, 2);
+            cbFieldTypeUnit.Name = "cbFieldTypeUnit";
+            cbFieldTypeUnit.Size = new Size(113, 29);
+            cbFieldTypeUnit.TabIndex = 11;
+            // 
+            // label11
+            // 
+            label11.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label11.AutoSize = true;
+            label11.Font = new Font("Ebrima", 12F);
+            label11.Location = new Point(139, 69);
+            label11.Name = "label11";
+            label11.Size = new Size(123, 21);
+            label11.TabIndex = 10;
+            label11.Text = "Tipo de Unidade";
+            // 
+            // txtFieldExpiryDate
+            // 
+            txtFieldExpiryDate.Font = new Font("Ebrima", 12F);
+            txtFieldExpiryDate.Location = new Point(20, 199);
+            txtFieldExpiryDate.Margin = new Padding(3, 2, 3, 2);
+            txtFieldExpiryDate.Name = "txtFieldExpiryDate";
+            txtFieldExpiryDate.Size = new Size(134, 29);
+            txtFieldExpiryDate.TabIndex = 9;
+            // 
+            // label10
+            // 
+            label10.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label10.AutoSize = true;
+            label10.Font = new Font("Ebrima", 12F);
+            label10.Location = new Point(20, 175);
+            label10.Name = "label10";
+            label10.Size = new Size(125, 21);
+            label10.TabIndex = 8;
+            label10.Text = "Data de validade";
+            // 
+            // txtFieldEntryDate
+            // 
+            txtFieldEntryDate.Font = new Font("Ebrima", 12F);
+            txtFieldEntryDate.Location = new Point(20, 144);
+            txtFieldEntryDate.Margin = new Padding(3, 2, 3, 2);
+            txtFieldEntryDate.Name = "txtFieldEntryDate";
+            txtFieldEntryDate.Size = new Size(134, 29);
+            txtFieldEntryDate.TabIndex = 7;
             // 
             // label8
             // 
             label8.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label8.AutoSize = true;
             label8.Font = new Font("Ebrima", 12F);
-            label8.Location = new Point(23, 178);
+            label8.Location = new Point(20, 122);
             label8.Name = "label8";
-            label8.Size = new Size(152, 28);
+            label8.Size = new Size(120, 21);
             label8.TabIndex = 5;
             label8.Text = "Data de entrada";
             // 
             // txtFieldQuantity
             // 
             txtFieldQuantity.Font = new Font("Ebrima", 12F);
-            txtFieldQuantity.Location = new Point(26, 140);
+            txtFieldQuantity.Location = new Point(20, 92);
+            txtFieldQuantity.Margin = new Padding(3, 2, 3, 2);
             txtFieldQuantity.Name = "txtFieldQuantity";
-            txtFieldQuantity.Size = new Size(107, 35);
+            txtFieldQuantity.Size = new Size(106, 29);
             txtFieldQuantity.TabIndex = 6;
             // 
             // txtFieldId
             // 
             txtFieldId.Font = new Font("Ebrima", 12F);
-            txtFieldId.Location = new Point(26, 71);
+            txtFieldId.Location = new Point(20, 40);
+            txtFieldId.Margin = new Padding(3, 2, 3, 2);
             txtFieldId.Name = "txtFieldId";
             txtFieldId.ReadOnly = true;
-            txtFieldId.Size = new Size(125, 35);
+            txtFieldId.Size = new Size(106, 29);
             txtFieldId.TabIndex = 2;
             txtFieldId.Text = "0";
             // 
@@ -296,9 +403,9 @@
             label7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label7.AutoSize = true;
             label7.Font = new Font("Ebrima", 12F);
-            label7.Location = new Point(23, 109);
+            label7.Location = new Point(20, 69);
             label7.Name = "label7";
-            label7.Size = new Size(115, 28);
+            label7.Size = new Size(91, 21);
             label7.TabIndex = 4;
             label7.Text = "Quantidade";
             // 
@@ -307,11 +414,11 @@
             label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label3.AutoSize = true;
             label3.Font = new Font("Ebrima", 12F);
-            label3.Location = new Point(23, 40);
+            label3.Location = new Point(20, 17);
             label3.Name = "label3";
-            label3.Size = new Size(31, 28);
+            label3.Size = new Size(141, 21);
             label3.TabIndex = 1;
-            label3.Text = "ID";
+            label3.Text = "Código do Estoque";
             // 
             // panel3
             // 
@@ -321,18 +428,20 @@
             panel3.Controls.Add(cbFieldProduct);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(label4);
-            panel3.Location = new Point(308, 3);
+            panel3.Location = new Point(296, 2);
+            panel3.Margin = new Padding(3, 2, 3, 2);
             panel3.Name = "panel3";
-            panel3.Size = new Size(294, 314);
+            panel3.Size = new Size(300, 236);
             panel3.TabIndex = 2;
             // 
             // FieldPd_Id
             // 
             FieldPd_Id.Font = new Font("Ebrima", 12F);
-            FieldPd_Id.Location = new Point(29, 140);
+            FieldPd_Id.Location = new Point(25, 105);
+            FieldPd_Id.Margin = new Padding(3, 2, 3, 2);
             FieldPd_Id.Name = "FieldPd_Id";
             FieldPd_Id.ReadOnly = true;
-            FieldPd_Id.Size = new Size(258, 35);
+            FieldPd_Id.Size = new Size(226, 29);
             FieldPd_Id.TabIndex = 9;
             // 
             // label6
@@ -340,28 +449,30 @@
             label6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label6.AutoSize = true;
             label6.Font = new Font("Ebrima", 12F);
-            label6.Location = new Point(29, 109);
+            label6.Location = new Point(25, 82);
             label6.Name = "label6";
-            label6.Size = new Size(108, 28);
+            label6.Size = new Size(142, 21);
             label6.TabIndex = 8;
-            label6.Text = "Produto ID";
+            label6.Text = "Código do Produto";
             // 
             // FieldPd_Name
             // 
             FieldPd_Name.Font = new Font("Ebrima", 12F);
-            FieldPd_Name.Location = new Point(29, 209);
+            FieldPd_Name.Location = new Point(25, 157);
+            FieldPd_Name.Margin = new Padding(3, 2, 3, 2);
             FieldPd_Name.Name = "FieldPd_Name";
             FieldPd_Name.ReadOnly = true;
-            FieldPd_Name.Size = new Size(258, 35);
+            FieldPd_Name.Size = new Size(226, 29);
             FieldPd_Name.TabIndex = 4;
             // 
             // cbFieldProduct
             // 
             cbFieldProduct.Font = new Font("Ebrima", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbFieldProduct.FormattingEnabled = true;
-            cbFieldProduct.Location = new Point(29, 70);
+            cbFieldProduct.Location = new Point(25, 52);
+            cbFieldProduct.Margin = new Padding(3, 2, 3, 2);
             cbFieldProduct.Name = "cbFieldProduct";
-            cbFieldProduct.Size = new Size(260, 36);
+            cbFieldProduct.Size = new Size(228, 29);
             cbFieldProduct.TabIndex = 7;
             // 
             // label5
@@ -369,9 +480,9 @@
             label5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label5.AutoSize = true;
             label5.Font = new Font("Ebrima", 12F);
-            label5.Location = new Point(29, 40);
+            label5.Location = new Point(25, 29);
             label5.Name = "label5";
-            label5.Size = new Size(84, 28);
+            label5.Size = new Size(66, 21);
             label5.TabIndex = 3;
             label5.Text = "Produto";
             // 
@@ -380,9 +491,9 @@
             label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label4.AutoSize = true;
             label4.Font = new Font("Ebrima", 12F);
-            label4.Location = new Point(29, 178);
+            label4.Location = new Point(25, 134);
             label4.Name = "label4";
-            label4.Size = new Size(66, 28);
+            label4.Size = new Size(53, 21);
             label4.TabIndex = 3;
             label4.Text = "Nome";
             // 
@@ -390,17 +501,19 @@
             // 
             panel5.Controls.Add(btnDetailCancel);
             panel5.Controls.Add(btnDetailSave);
-            panel5.Location = new Point(3, 323);
+            panel5.Location = new Point(3, 255);
+            panel5.Margin = new Padding(3, 2, 3, 2);
             panel5.Name = "panel5";
-            panel5.Size = new Size(599, 59);
+            panel5.Size = new Size(560, 44);
             panel5.TabIndex = 2;
             // 
             // btnDetailCancel
             // 
             btnDetailCancel.Font = new Font("Ebrima", 12F);
-            btnDetailCancel.Location = new Point(244, 17);
+            btnDetailCancel.Location = new Point(214, 13);
+            btnDetailCancel.Margin = new Padding(3, 2, 3, 2);
             btnDetailCancel.Name = "btnDetailCancel";
-            btnDetailCancel.Size = new Size(192, 39);
+            btnDetailCancel.Size = new Size(168, 29);
             btnDetailCancel.TabIndex = 2;
             btnDetailCancel.Text = "Cancelar";
             btnDetailCancel.UseVisualStyleBackColor = true;
@@ -408,20 +521,22 @@
             // btnDetailSave
             // 
             btnDetailSave.Font = new Font("Ebrima", 12F);
-            btnDetailSave.Location = new Point(23, 17);
+            btnDetailSave.Location = new Point(20, 13);
+            btnDetailSave.Margin = new Padding(3, 2, 3, 2);
             btnDetailSave.Name = "btnDetailSave";
-            btnDetailSave.Size = new Size(192, 39);
+            btnDetailSave.Size = new Size(168, 29);
             btnDetailSave.TabIndex = 1;
             btnDetailSave.Text = "Salvar";
             btnDetailSave.UseVisualStyleBackColor = true;
             // 
             // StockView
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1029, 676);
+            ClientSize = new Size(968, 549);
             Controls.Add(tabControl1);
             Controls.Add(panel1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "StockView";
             Text = "StockView";
             panel1.ResumeLayout(false);
@@ -468,11 +583,18 @@
         private Panel panel5;
         private Button btnDetailCancel;
         private Button btnDetailSave;
-        private TextBox txtFieldDate;
+        private TextBox txtFieldEntryDate;
         private TextBox txtFieldQuantity;
         private Label label8;
         private Label label7;
         private TextBox FieldPd_Id;
         private Label label6;
+        private Label label9;
+        private Button btnFilter;
+        private TextBox txtFieldExpiryDate;
+        private Label label10;
+        private ComboBox cbFieldTypeUnit;
+        private Label label11;
+        private Button btnResetList;
     }
 }

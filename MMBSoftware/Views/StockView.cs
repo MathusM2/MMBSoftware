@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MMBSoftware.Models;
+using MMBSoftware.Models.Enums;
+using MMBSoftware.Services;
+using MMBSoftware.Views.Dialogs;
 
 namespace MMBSoftware.Views
 {
@@ -17,6 +21,7 @@ namespace MMBSoftware.Views
         private bool _isEdit;
         private bool _isSuccessful;
         private string _message;
+        private IFilter _filter { get; set; }
 
         //Constructor
         public StockView()
@@ -24,6 +29,7 @@ namespace MMBSoftware.Views
             InitializeComponent();
             AssociateAndRaiseViewEvents();
             tabControl1.TabPages.Remove(tabStockProduct);
+            cbFieldTypeUnit.DataSource = UnitTypeToStringExtensions.GetAllUnitTypes();
         }
 
         private void AssociateAndRaiseViewEvents()
@@ -34,10 +40,8 @@ namespace MMBSoftware.Views
                 tabControl1.TabPages.Remove(tabStockList);
                 tabControl1.TabPages.Add(tabStockProduct);
                 AddEvent?.Invoke(this, EventArgs.Empty);
-                tabPdDetailTitle.Text = "Add New Stock Product";
+                tabPdDetailTitle.Text = "Add New Stock registration";
             };
-
-
             //Edit
             btnEdit.Click += delegate
             {
@@ -73,7 +77,7 @@ namespace MMBSoftware.Views
             {
                 btnDetailSave.Enabled = false;
                 SaveEvent?.Invoke(this, EventArgs.Empty);
-                await Task.Delay(1000);
+                await Task.Delay(300);
                 if (IsSuccessful)
                 {
                     tabControl1.TabPages.Remove(tabStockProduct);
@@ -131,12 +135,11 @@ namespace MMBSoftware.Views
         }
 
         // Properties
-        public string Id
+        public string StockId
         {
             get { return txtFieldId.Text; }
             set { txtFieldId.Text = value; }
         }
-
         public string SelectedProduct
         {
             get { return cbFieldProduct.Text; }
@@ -145,8 +148,7 @@ namespace MMBSoftware.Views
                 cbFieldProduct.SelectedIndex = cbFieldProduct.FindStringExact(value);
             }
         }
-
-        public string ProductId 
+        public string ProductId
         {
             get { return FieldPd_Id.Text; }
             set { FieldPd_Id.Text = value; }
@@ -161,12 +163,30 @@ namespace MMBSoftware.Views
             get { return txtFieldQuantity.Text; }
             set { txtFieldQuantity.Text = value; }
         }
-        public string EntryDate
+
+        public string UnitType
         {
-            get { return txtFieldDate.Text; }
+            get { return cbFieldTypeUnit.Text; }
             set
             {
-                txtFieldDate.Text = value;
+                cbFieldTypeUnit.Text = value;
+            }
+        }
+
+        public string EntryDate
+        {
+            get { return txtFieldEntryDate.Text; }
+            set
+            {
+                txtFieldEntryDate.Text = value;
+            }
+        }
+        public string ExpiryDate
+        {
+            get { return txtFieldExpiryDate.Text; }
+            set
+            {
+                txtFieldExpiryDate.Text = value;
             }
         }
         public string SearchValue
@@ -190,6 +210,12 @@ namespace MMBSoftware.Views
             set { _message = value; }
         }
 
+        public IFilter StockFilter
+        {
+            get { return _filter; }
+            set { _filter = value; }
+        }
+
         //Events
 
         public event EventHandler AddEvent;
@@ -199,12 +225,20 @@ namespace MMBSoftware.Views
         public event EventHandler SaveEvent;
         public event EventHandler CancelEvent;
         public event EventHandler SearchEvent;
+        public event EventHandler FilterEvent;
 
 
         // Methods
         public void setStockListBindingSource(BindingSource stockList)
         {
             dataGridStockList.DataSource = stockList;
+        }
+
+        public void FilterStockEvent_Handler(IFilter filter)
+        {
+            _filter = filter;
+            FilterEvent?.Invoke(this, EventArgs.Empty);
+
         }
 
         public void setSelectedProductListBindingSource(BindingSource selectedProductList)
@@ -232,6 +266,18 @@ namespace MMBSoftware.Views
                     instance.BringToFront();
             }
             return instance;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            StockFilterDialogView viewDialog = new StockFilterDialogView(this, _filter);
+            viewDialog.StartPosition = FormStartPosition.CenterParent;
+            viewDialog.ShowDialog();
+        }
+
+        private void btnResetList_Click(object sender, EventArgs e)
+        {
+            SearchEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }

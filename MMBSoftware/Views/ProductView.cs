@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MMBSoftware.Events;
+using MMBSoftware.Views.Dialogs.CustomDialogs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,7 +25,6 @@ namespace MMBSoftware.Views
             InitializeComponent();
             AssociateAndRaiseViewEvents();
             tabControl1.TabPages.Remove(tabDetailPd);
-            cbFieldCategory.Text = "Select Category";
         }
 
         private void AssociateAndRaiseViewEvents()
@@ -34,14 +35,24 @@ namespace MMBSoftware.Views
                 tabControl1.TabPages.Remove(tabListPd);
                 tabControl1.TabPages.Add(tabDetailPd);
                 AddEvent?.Invoke(this, EventArgs.Empty);
-                tabPdDetailTitle.Text = "Add New Product";
+                tabPdDetailTitle.Text = "Adicionar novo produto";
             };
+
+            //Add Category
+            cbFieldCategory.SelectedIndexChanged += delegate {
+                if (cbFieldCategory.SelectedIndex == cbFieldCategory.Items.Count - 1)
+                {
+                    ProductCategoryDialogView dialog = new ProductCategoryDialogView(this);
+                    dialog.ShowDialog();
+                }
+            };
+
             //Edit
             btnEdit.Click += delegate {
                 tabControl1.TabPages.Remove(tabListPd);
                 tabControl1.TabPages.Add(tabDetailPd);
                 EditEvent?.Invoke(this, EventArgs.Empty);
-                tabPdDetailTitle.Text = "Edit Product";
+                tabPdDetailTitle.Text = "Detalhes do produto";
             };
 
             //Cancel
@@ -104,7 +115,6 @@ namespace MMBSoftware.Views
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Falha ao excluir o registro do item, com o seguinte erro: \n {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
                     }
                 }
                 else
@@ -186,6 +196,7 @@ namespace MMBSoftware.Views
         public event EventHandler SearchEvent;
         public event EventHandler SaveEvent;
         public event EventHandler CancelEvent;
+        public event EventHandler<StringEventArgs> AddCategory;
 
         // Methods
         public void SetProductListBindingSource(BindingSource productList)
@@ -198,6 +209,11 @@ namespace MMBSoftware.Views
             if(cbFieldCategory.DataSource != null) cbFieldCategory.DataSource = null; // Clear previous data source
 
             cbFieldCategory.DataSource = categoryList;
+        }
+
+        public void ProductEventNewCategory_Handler(string nameCategory)
+        {
+            AddCategory?.Invoke(this, new StringEventArgs(nameCategory));
         }
 
         // Singleton

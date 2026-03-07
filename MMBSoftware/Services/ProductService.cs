@@ -31,7 +31,7 @@ namespace MMBSoftware.Services
 
         public async Task InitiaInitializeAsync()
         {
-            _productsList = await _repository.GetAll();
+            _productsList = await _repository.GetAll().ConfigureAwait(false);
         }
 
         #region Bussiness Logic for CRUD Operations
@@ -57,7 +57,6 @@ namespace MMBSoftware.Services
                 throw;
             }
         }
-
         
         public async Task DeleteProduct(int productId)
         {
@@ -123,7 +122,8 @@ namespace MMBSoftware.Services
         {
             try
             {
-                _productsList = await _repository.GetAll();
+                this._productsList = null;
+                this._productsList = await _repository.GetAll();
                 return _productsList;
             }
             catch (Exception)
@@ -134,12 +134,12 @@ namespace MMBSoftware.Services
 
         public IEnumerable<string> GetCategoriesFromCache()
         {
-            return _productsList.Select(p => p.Category).Distinct();
+            return _productsList.Select(p => p.Category).Distinct().Append("Nova categoria");
         }
 
         public IEnumerable<string> GetNamesFromCache()
         {
-            return _productsList.Select(p => p.Name).Distinct(); ;
+            return _productsList.Select(p => p.Name).Distinct();
         }
         #endregion
     }

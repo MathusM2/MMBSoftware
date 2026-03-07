@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MMBSoftware.Events;
 using MMBSoftware.Models;
 using MMBSoftware.Presenters.Commom;
 using MMBSoftware.Services;
@@ -35,6 +36,7 @@ namespace MMBSoftware.Presenters
             this.view.DeleteEvent += DeleteSelectedProduct;
             this.view.SaveEvent += SaveProduct;
             this.view.CancelEvent += CancelAction;
+            this.view.AddCategory += AddCategory;
             // Set product list binding source
             this.view.SetProductListBindingSource(productBindingSource);
             this.view.SetCategoryListBindingSource(categoryBindingSource);
@@ -52,6 +54,17 @@ namespace MMBSoftware.Presenters
             view.IsEdit = false;
             LoadCategoriesList();
         }
+        private async void AddCategory(object? sender, StringEventArgs e)
+        {
+            List<string> modList = categoryList.ToList();
+            modList.Remove(modList.Last());
+            modList.Add($"{e._value}");
+            modList.Add("Nova categoria");
+            categoryList = modList;
+            categoryBindingSource.DataSource = null;
+            categoryBindingSource.DataSource = categoryList;
+        }
+
         private void LoadSelectedProductEdit(object? sender, EventArgs e)
         {
             LoadCategoriesList();
@@ -117,12 +130,17 @@ namespace MMBSoftware.Presenters
                 catch (Exception ex)
                 {
                     view.IsSuccessful = false;
-                    view.Message = $"Falha ao salvar o registro de estoque, com o seguinte erro:\n {ex.Message}";
+                    view.Message = $"Falha ao salvar o registro de produto, com o seguinte erro:\n {ex.Message}";
                 }
 
                 view.IsSuccessful = true;
+
+                
                 CleanviewFields();
                 LoadProductList();
+
+                await Task.Delay(500);
+                RefeshStockView?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {
@@ -180,11 +198,12 @@ namespace MMBSoftware.Presenters
                 view.Message = $"Erro ao carregar a lista:\n {ex.Message}";
             }
         }
+
         private void LoadCategoriesList()
         {
             try
             {
-                categoryList = productList.Select(p => p.Category).Distinct();
+                categoryList = productList.Select(p => p.Category).Distinct().Append("Selecione uma categoria").Reverse().Append("Nova categoria");
                 categoryBindingSource.DataSource = null;
                 categoryBindingSource.DataSource = categoryList;
             }
@@ -210,11 +229,13 @@ namespace MMBSoftware.Presenters
             else
             {
                 (view as Form).MdiParent = (_instance.view as Form)?.MdiParent;
-                _instance.CleanviewFields();
             }
 
             return _instance;
         }
+
+        // Events
+        public event EventHandler RefeshStockView;
     }
 }
 

@@ -17,6 +17,7 @@ namespace MMBSoftware.Services
         Task<IEnumerable<Stock>> GetStocks();
         Task<IEnumerable<Stock>> GetAllStocks();
         IEnumerable<Stock> SearchStocksByTerm(string searchTerm);
+        IEnumerable<Stock> GetFilteredStocks(IFilter filter);
         IEnumerable<Stock> SearchStocksById(int id);
 
     }
