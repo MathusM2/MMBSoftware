@@ -32,7 +32,7 @@ namespace MMBSoftware.Services
 
         public async Task InitiaInitializeAsync()
         {
-            _stocksList = await _repository.GetAll();
+            _stocksList = await _repository.GetAll().ConfigureAwait(false);
         }
 
         #region CRUD Operations
@@ -40,7 +40,8 @@ namespace MMBSoftware.Services
         {
             try
             {
-                await _repository.Add(stockModel);;
+                await _repository.Add(stockModel).ConfigureAwait(false);
+                _stocksList = await _repository.GetAll().ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -52,7 +53,8 @@ namespace MMBSoftware.Services
         {
             try
             {
-                await _repository.Update(stockModel);
+                await _repository.Update(stockModel).ConfigureAwait(false);
+                _stocksList = await _repository.GetAll().ConfigureAwait(false);
             }
             catch(Exception)
             {
@@ -61,7 +63,8 @@ namespace MMBSoftware.Services
         }
         public async Task DeleteStock(int Id)
         {
-            await _repository.Delete(Id);
+            await _repository.Delete(Id).ConfigureAwait(false);
+            _stocksList = await _repository.GetAll().ConfigureAwait(false);
         }
 
         #endregion
@@ -157,7 +160,7 @@ namespace MMBSoftware.Services
         public async Task<IEnumerable<Stock>> GetStocks()
         {
             return _stocksList != null ? _stocksList :
-                await _repository.GetAll();
+                await _repository.GetAll().ConfigureAwait(false);
         }
 
 
@@ -166,7 +169,7 @@ namespace MMBSoftware.Services
         {
             try
             {
-                _stocksList = await _repository.GetAll();
+                _stocksList = await _repository.GetAll().ConfigureAwait(false);
                 return _stocksList;
             }
             catch (Exception)

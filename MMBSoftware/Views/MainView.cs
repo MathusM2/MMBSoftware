@@ -1,4 +1,4 @@
-using MMBSoftware.Views;
+using MMBSoftware.Views.ViewInterfaces;
 
 namespace MMBSoftware
 {

@@ -7,6 +7,7 @@ using MMBSoftware.Models;
 using MMBSoftware.Repositories;
 using MMBSoftware.Services;
 using MMBSoftware.Views;
+using MMBSoftware.Views.ViewInterfaces;
 using MySql.Data.MySqlClient;
 
 namespace MMBSoftware.Presenters

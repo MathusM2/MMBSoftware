@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MMBSoftware.Views
+namespace MMBSoftware.Views.ViewInterfaces
 {
     public interface ICustomerView
     {

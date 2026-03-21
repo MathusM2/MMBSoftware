@@ -10,7 +10,7 @@ using MMBSoftware.Models;
 using MMBSoftware.Models.Enums;
 using MMBSoftware.Presenters.Commom;
 using MMBSoftware.Services;
-using MMBSoftware.Views;
+using MMBSoftware.Views.ViewInterfaces;
 using MySqlX.XDevAPI;
 
 namespace MMBSoftware.Presenters
@@ -51,6 +51,7 @@ namespace MMBSoftware.Presenters
             this.view.Show();
             // Load the stock list
             LoadStock();
+            System.Diagnostics.Debug.WriteLine($"StockPresenter instance hash: {productService?.GetHashCode()}");
         }
 
 
@@ -207,7 +208,7 @@ namespace MMBSoftware.Presenters
                 stockBindingSource.DataSource = null;
                 stockBindingSource.DataSource = stockList.ToList();
 
-                productService.GetAllProducts();
+                await productService.GetAllProducts();
             }
             catch (Exception ex)
             {

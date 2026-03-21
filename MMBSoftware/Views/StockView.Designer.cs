@@ -30,7 +30,7 @@
         {
             panel1 = new Panel();
             label1 = new Label();
-            tabControl1 = new TabControl();
+            tabStockEdit = new TabControl();
             tabStockList = new TabPage();
             btnResetList = new Button();
             btnFilter = new Button();
@@ -42,7 +42,7 @@
             label2 = new Label();
             txtSearchPd = new TextBox();
             dataGridStockList = new DataGridView();
-            tabStockProduct = new TabPage();
+            tabStockRegEdit = new TabPage();
             tabPdDetailTitle = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             panel2 = new Panel();
@@ -67,10 +67,10 @@
             btnDetailCancel = new Button();
             btnDetailSave = new Button();
             panel1.SuspendLayout();
-            tabControl1.SuspendLayout();
+            tabStockEdit.SuspendLayout();
             tabStockList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridStockList).BeginInit();
-            tabStockProduct.SuspendLayout();
+            tabStockRegEdit.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -99,18 +99,18 @@
             label1.Text = "ESTOQUE";
             label1.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // tabControl1
+            // tabStockEdit
             // 
-            tabControl1.Controls.Add(tabStockList);
-            tabControl1.Controls.Add(tabStockProduct);
-            tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tabControl1.Location = new Point(0, 73);
-            tabControl1.Margin = new Padding(3, 2, 3, 2);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(968, 476);
-            tabControl1.TabIndex = 1;
+            tabStockEdit.Controls.Add(tabStockList);
+            tabStockEdit.Controls.Add(tabStockRegEdit);
+            tabStockEdit.Dock = DockStyle.Fill;
+            tabStockEdit.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tabStockEdit.Location = new Point(0, 73);
+            tabStockEdit.Margin = new Padding(3, 2, 3, 2);
+            tabStockEdit.Name = "tabStockEdit";
+            tabStockEdit.SelectedIndex = 0;
+            tabStockEdit.Size = new Size(968, 476);
+            tabStockEdit.TabIndex = 1;
             // 
             // tabStockList
             // 
@@ -265,18 +265,18 @@
             dataGridStockList.Size = new Size(618, 366);
             dataGridStockList.TabIndex = 2;
             // 
-            // tabStockProduct
+            // tabStockRegEdit
             // 
-            tabStockProduct.Controls.Add(tabPdDetailTitle);
-            tabStockProduct.Controls.Add(flowLayoutPanel1);
-            tabStockProduct.Location = new Point(4, 28);
-            tabStockProduct.Margin = new Padding(3, 2, 3, 2);
-            tabStockProduct.Name = "tabStockProduct";
-            tabStockProduct.Padding = new Padding(3, 2, 3, 2);
-            tabStockProduct.Size = new Size(960, 444);
-            tabStockProduct.TabIndex = 1;
-            tabStockProduct.Text = "Produto em estoque";
-            tabStockProduct.UseVisualStyleBackColor = true;
+            tabStockRegEdit.Controls.Add(tabPdDetailTitle);
+            tabStockRegEdit.Controls.Add(flowLayoutPanel1);
+            tabStockRegEdit.Location = new Point(4, 28);
+            tabStockRegEdit.Margin = new Padding(3, 2, 3, 2);
+            tabStockRegEdit.Name = "tabStockRegEdit";
+            tabStockRegEdit.Padding = new Padding(3, 2, 3, 2);
+            tabStockRegEdit.Size = new Size(960, 444);
+            tabStockRegEdit.TabIndex = 1;
+            tabStockRegEdit.Text = "Produto em estoque";
+            tabStockRegEdit.UseVisualStyleBackColor = true;
             // 
             // tabPdDetailTitle
             // 
@@ -534,19 +534,19 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(968, 549);
-            Controls.Add(tabControl1);
+            Controls.Add(tabStockEdit);
             Controls.Add(panel1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "StockView";
             Text = "StockView";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            tabControl1.ResumeLayout(false);
+            tabStockEdit.ResumeLayout(false);
             tabStockList.ResumeLayout(false);
             tabStockList.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridStockList).EndInit();
-            tabStockProduct.ResumeLayout(false);
-            tabStockProduct.PerformLayout();
+            tabStockRegEdit.ResumeLayout(false);
+            tabStockRegEdit.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -559,9 +559,9 @@
         #endregion
 
         private Panel panel1;
-        private TabControl tabControl1;
+        private TabControl tabStockEdit;
         private TabPage tabStockList;
-        private TabPage tabStockProduct;
+        private TabPage tabStockRegEdit;
         private Label label1;
         private DataGridView dataGridStockList;
         private TextBox txtSearchPd;

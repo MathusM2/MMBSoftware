@@ -19,6 +19,7 @@ namespace MMBSoftware.Services
         Task<IEnumerable<Product>> GetAllProducts();
         IEnumerable<Product> SearchProductsByTerm(string Term);
         IEnumerable<Product> SearchProductsById(int Id);
+        IEnumerable<Product> SearchProductByBarcode(string barcode);
         IEnumerable<string> GetCategoriesFromCache();
         IEnumerable<string> GetNamesFromCache();
 

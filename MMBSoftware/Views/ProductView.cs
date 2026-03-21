@@ -1,5 +1,6 @@
 ﻿using MMBSoftware.Events;
 using MMBSoftware.Views.Dialogs.CustomDialogs;
+using MMBSoftware.Views.ViewInterfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace MMBSoftware.Views
         public ProductView()
         {
             InitializeComponent();
+            ConfigureDataGridProduct();
             AssociateAndRaiseViewEvents();
             tabControl1.TabPages.Remove(tabDetailPd);
         }
@@ -141,6 +143,16 @@ namespace MMBSoftware.Views
                 txtFieldName.Text = value;
             }
         }
+
+        public string Barcode
+        {
+            get { return txtFieldBarcode.Text; }
+            set
+            {
+                txtFieldBarcode.Text = value;
+            }
+        }
+
         public string Description 
         { 
             get { return txtFieldDescription.Text; }

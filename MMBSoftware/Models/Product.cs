@@ -14,6 +14,7 @@ namespace MMBSoftware.Models
         //Fields
         private int _id;
         private string _name;
+        private string _barcode;
         private string _description;
         private decimal _price;
         private string _category;
@@ -36,6 +37,13 @@ namespace MMBSoftware.Models
             set { _name = value; }
         }
 
+        [DisplayName("´Código de Barras")]
+        public string Barcode
+        {
+            get { return _barcode;  }
+            set { _barcode =  value; }
+        }
+
         [DisplayName("Descrição")]
         [StringLength(500, ErrorMessage = "Descrição do produto não pode exceder 500 caracteres")]
         public string Description
@@ -55,6 +63,7 @@ namespace MMBSoftware.Models
 
         [DisplayName("Categoria")]
         [Required(ErrorMessage = "A categoria do produto é necessário!")]
+        [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "Category cannot exceed 50 characters.")]
         public string Category
         {

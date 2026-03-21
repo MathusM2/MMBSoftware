@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MMBSoftware.Views
+namespace MMBSoftware.Views.ViewInterfaces
 {
     public interface IProductView
     {
         //Fields
         string ProductId { get; set; }
         string PdName { get; set; }
+        string Barcode { get; set; }
         string Description { get; set; }
         string Price { get; set; }
         string Category { get; set; }

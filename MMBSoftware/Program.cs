@@ -1,10 +1,10 @@
 using MMBSoftware.Models;
-using MMBSoftware.Views;
 using MMBSoftware.Repositories;
 using MMBSoftware.Presenters;
 using MMBSoftware.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using MMBSoftware.Views.ViewInterfaces;
 
 namespace MMBSoftware
 {

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using MMBSoftware.Events;
 using MMBSoftware.Models;
 using MMBSoftware.Presenters.Commom;
 using MMBSoftware.Services;
-using MMBSoftware.Views;
+using MMBSoftware.Views.ViewInterfaces;
 
 namespace MMBSoftware.Presenters
 {
@@ -44,6 +45,8 @@ namespace MMBSoftware.Presenters
             this.view.Show();
             // Load product list
             LoadProductList();
+
+            System.Diagnostics.Debug.WriteLine($"ProductPresenter instance hash: {serviceProduct?.GetHashCode()}");
         }
 
         //Methods
@@ -59,7 +62,7 @@ namespace MMBSoftware.Presenters
             List<string> modList = categoryList.ToList();
             modList.Remove(modList.Last());
             modList.Add($"{e._value}");
-            modList.Add("Nova categoria");
+            modList.Add("Nova categoria +");
             categoryList = modList;
             categoryBindingSource.DataSource = null;
             categoryBindingSource.DataSource = categoryList;
@@ -73,6 +76,7 @@ namespace MMBSoftware.Presenters
             {
                 view.ProductId = productItem.Id.ToString();
                 view.PdName = productItem.Name;
+                view.Barcode = productItem.Barcode.ToString();
                 view.Description = productItem.Description;
                 view.Price = productItem.Price.ToString();
                 view.Category = productItem.Category;
@@ -107,45 +111,53 @@ namespace MMBSoftware.Presenters
             Product productModel = new Product();
             productModel.Id = int.TryParse(view.ProductId, out int id) ? id : 0;
             productModel.Name = view.PdName;
+            productModel.Barcode = view.Barcode;
             productModel.Description = view.Description;
-            productModel.Category = view.Category;
             productModel.Price = decimal.TryParse(view.Price, out decimal price) ? price : 0;
 
-            try
+            if(view.Category == "Selecione uma categoria")
             {
-                new ModelDataValidation().Valite(productModel);
+                view.Message = "Selecione uma categoria para o produto.";
+            }
+            else
+            {
+                productModel.Category = view.Category;
                 try
                 {
-                    if (view.IsEdit)
+                    new ModelDataValidation().Valite(productModel);
+                    try
                     {
-                        await serviceProduct.UpdateProduct(productModel);
-                        view.Message = "Produto atualizado com sucesso!";
+                        if (view.IsEdit)
+                        {
+                            await serviceProduct.UpdateProduct(productModel);
+                            view.Message = "Produto atualizado com sucesso!";
+                        }
+                        else
+                        {
+                            await serviceProduct.CreateProduct(productModel);
+                            view.Message = "Produto adicionado com sucesso!";
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        await serviceProduct.CreateProduct(productModel);
-                        view.Message = "Produto adicionado com sucesso!";
+                        view.IsSuccessful = false;
+                        view.Message = $"Falha ao salvar o registro de produto, com o seguinte erro:\n {ex.Message}";
                     }
+
+                    view.IsSuccessful = true;
+
+                
+                    CleanviewFields();
+                    LoadProductList();
+
+                    await Task.Delay(500);
+                    RefeshStockView?.Invoke(this, EventArgs.Empty);
                 }
                 catch (Exception ex)
                 {
-                    view.IsSuccessful = false;
-                    view.Message = $"Falha ao salvar o registro de produto, com o seguinte erro:\n {ex.Message}";
-                }
-
-                view.IsSuccessful = true;
-
-                
-                CleanviewFields();
-                LoadProductList();
-
-                await Task.Delay(500);
-                RefeshStockView?.Invoke(this, EventArgs.Empty);
-            }
-            catch (Exception ex)
-            {
                 view.IsSuccessful = false;
                 view.Message = $"Falha ao validar:\n {ex.Message}";
+                }
             }
         }
         
@@ -172,7 +184,12 @@ namespace MMBSoftware.Presenters
         {
             string searchValue = view.SearchValue;
             bool EmptySearch = string.IsNullOrEmpty(view.SearchValue);
-            if (!EmptySearch) productList = int.TryParse(searchValue, out int productId)
+
+            //Barcode
+            if(BigInteger.TryParse(searchValue, out BigInteger result) && result.ToString().Length == 13) {
+                productList = serviceProduct.SearchProductByBarcode(searchValue);
+            }
+            else if (!EmptySearch) productList = int.TryParse(searchValue, out int productId)
                 ? serviceProduct.SearchProductsById(productId)
                 : serviceProduct.SearchProductsByTerm(searchValue);
             else productList = await serviceProduct.GetAllProducts();

@@ -21,7 +21,7 @@ namespace MMBSoftware.Presenters.Commom
                 {
                     errorMessage += "-" + item.ErrorMessage + "\n";
                 }
-                throw new Exception("Validation Error:\n" + errorMessage);
+                throw new Exception("Erro ao realizar validação:\n" + errorMessage);
             }
         }
     }

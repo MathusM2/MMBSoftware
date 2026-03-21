@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,8 @@ namespace MMBSoftware.Services
         {
             try
             {
-                await _repository.Add(product);
+                await _repository.Add(product).ConfigureAwait(false);
+                _productsList = await _repository.GetAll().ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -50,7 +52,8 @@ namespace MMBSoftware.Services
         {
             try
             {
-               await _repository.Update(product);
+               await _repository.Update(product).ConfigureAwait(false);
+                _productsList = await _repository.GetAll().ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -62,7 +65,8 @@ namespace MMBSoftware.Services
         {
             try
             {
-                await _repository.Delete(productId);
+                await _repository.Delete(productId).ConfigureAwait(false);
+                _productsList = await _repository.GetAll().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -110,20 +114,41 @@ namespace MMBSoftware.Services
                 throw;
             }
         }
+
+        public IEnumerable<Product> SearchProductByBarcode(string productBarcode)
+        {
+            try
+            {
+                var result = _productsList.Where(p => p.Barcode == productBarcode);
+                if (result != null && result.Any())
+                {
+                    Debug.WriteLine(result.ToString());
+                    return result;
+                }
+                else 
+                {
+                    return Enumerable.Empty<Product>();
+                }
+            }
+            catch (Exception) 
+            {                 
+                throw;
+            }
+        }
         #endregion
 
         #region DataLoad Methods
         public async Task<IEnumerable<Product>> GetProducts()
         {
              return _productsList != null ? _productsList :
-                await _repository.GetAll();
+                await _repository.GetAll().ConfigureAwait(false);
         }
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
             try
             {
                 this._productsList = null;
-                this._productsList = await _repository.GetAll();
+                this._productsList = await _repository.GetAll().ConfigureAwait(false);
                 return _productsList;
             }
             catch (Exception)

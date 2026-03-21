@@ -60,6 +60,8 @@
             panel5 = new Panel();
             btnDetailCancel = new Button();
             btnDetailSave = new Button();
+            label9 = new Label();
+            txtFieldBarcode = new TextBox();
             panel1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabListPd.SuspendLayout();
@@ -278,11 +280,13 @@
             flowLayoutPanel1.Location = new Point(0, 46);
             flowLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(536, 340);
+            flowLayoutPanel1.Size = new Size(665, 393);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // panel2
             // 
+            panel2.Controls.Add(txtFieldBarcode);
+            panel2.Controls.Add(label9);
             panel2.Controls.Add(txtFieldName);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(txtFieldId);
@@ -290,7 +294,7 @@
             panel2.Location = new Point(3, 2);
             panel2.Margin = new Padding(3, 2, 3, 2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(262, 151);
+            panel2.Size = new Size(398, 154);
             panel2.TabIndex = 1;
             // 
             // txtFieldName
@@ -299,7 +303,7 @@
             txtFieldName.Location = new Point(23, 106);
             txtFieldName.Margin = new Padding(3, 2, 3, 2);
             txtFieldName.Name = "txtFieldName";
-            txtFieldName.Size = new Size(226, 29);
+            txtFieldName.Size = new Size(359, 29);
             txtFieldName.TabIndex = 4;
             // 
             // label4
@@ -307,7 +311,7 @@
             label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label4.AutoSize = true;
             label4.Font = new Font("Ebrima", 12F);
-            label4.Location = new Point(23, 83);
+            label4.Location = new Point(23, 84);
             label4.Name = "label4";
             label4.Size = new Size(53, 21);
             label4.TabIndex = 3;
@@ -329,7 +333,7 @@
             label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label3.AutoSize = true;
             label3.Font = new Font("Ebrima", 12F);
-            label3.Location = new Point(20, 30);
+            label3.Location = new Point(23, 30);
             label3.Name = "label3";
             label3.Size = new Size(85, 21);
             label3.TabIndex = 1;
@@ -341,10 +345,10 @@
             panel3.Controls.Add(txtFieldPrice);
             panel3.Controls.Add(label6);
             panel3.Controls.Add(label5);
-            panel3.Location = new Point(271, 2);
+            panel3.Location = new Point(407, 2);
             panel3.Margin = new Padding(3, 2, 3, 2);
             panel3.Name = "panel3";
-            panel3.Size = new Size(257, 151);
+            panel3.Size = new Size(253, 154);
             panel3.TabIndex = 2;
             // 
             // cbFieldCategory
@@ -371,7 +375,7 @@
             label6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label6.AutoSize = true;
             label6.Font = new Font("Ebrima", 12F);
-            label6.Location = new Point(17, 30);
+            label6.Location = new Point(13, 30);
             label6.Name = "label6";
             label6.Size = new Size(49, 21);
             label6.TabIndex = 5;
@@ -382,7 +386,7 @@
             label5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label5.AutoSize = true;
             label5.Font = new Font("Ebrima", 12F);
-            label5.Location = new Point(17, 83);
+            label5.Location = new Point(13, 83);
             label5.Name = "label5";
             label5.Size = new Size(77, 21);
             label5.TabIndex = 3;
@@ -392,20 +396,20 @@
             // 
             panel4.Controls.Add(txtFieldDescription);
             panel4.Controls.Add(label7);
-            panel4.Location = new Point(3, 157);
+            panel4.Location = new Point(3, 160);
             panel4.Margin = new Padding(3, 2, 3, 2);
             panel4.Name = "panel4";
-            panel4.Size = new Size(524, 111);
+            panel4.Size = new Size(657, 168);
             panel4.TabIndex = 3;
             // 
             // txtFieldDescription
             // 
             txtFieldDescription.Font = new Font("Ebrima", 12F);
-            txtFieldDescription.Location = new Point(23, 24);
+            txtFieldDescription.Location = new Point(23, 51);
             txtFieldDescription.Margin = new Padding(3, 2, 3, 2);
             txtFieldDescription.Multiline = true;
             txtFieldDescription.Name = "txtFieldDescription";
-            txtFieldDescription.Size = new Size(489, 78);
+            txtFieldDescription.Size = new Size(625, 78);
             txtFieldDescription.TabIndex = 8;
             // 
             // label7
@@ -413,7 +417,7 @@
             label7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label7.AutoSize = true;
             label7.Font = new Font("Ebrima", 12F);
-            label7.Location = new Point(23, 1);
+            label7.Location = new Point(-132, 0);
             label7.Name = "label7";
             label7.Size = new Size(77, 21);
             label7.TabIndex = 7;
@@ -423,10 +427,10 @@
             // 
             panel5.Controls.Add(btnDetailCancel);
             panel5.Controls.Add(btnDetailSave);
-            panel5.Location = new Point(3, 272);
+            panel5.Location = new Point(3, 332);
             panel5.Margin = new Padding(3, 2, 3, 2);
             panel5.Name = "panel5";
-            panel5.Size = new Size(524, 44);
+            panel5.Size = new Size(524, 54);
             panel5.TabIndex = 2;
             // 
             // btnDetailCancel
@@ -450,6 +454,26 @@
             btnDetailSave.TabIndex = 1;
             btnDetailSave.Text = "Salvar";
             btnDetailSave.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            label9.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label9.AutoSize = true;
+            label9.Font = new Font("Ebrima", 12F);
+            label9.Location = new Point(161, 30);
+            label9.Name = "label9";
+            label9.Size = new Size(129, 21);
+            label9.TabIndex = 5;
+            label9.Text = "Código de Barras";
+            // 
+            // txtFieldBarcode
+            // 
+            txtFieldBarcode.Font = new Font("Ebrima", 12F);
+            txtFieldBarcode.Location = new Point(161, 53);
+            txtFieldBarcode.Margin = new Padding(3, 2, 3, 2);
+            txtFieldBarcode.Name = "txtFieldBarcode";
+            txtFieldBarcode.Size = new Size(221, 29);
+            txtFieldBarcode.TabIndex = 6;
             // 
             // ProductView
             // 
@@ -514,5 +538,7 @@
         private ComboBox cbFieldCategory;
         private CheckedListBox checkedListBox1;
         private Label label8;
+        private TextBox txtFieldBarcode;
+        private Label label9;
     }
 }

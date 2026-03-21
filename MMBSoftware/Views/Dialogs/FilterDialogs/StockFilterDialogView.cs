@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using MMBSoftware.Models;
 using MMBSoftware.Models.Enums;
 using MMBSoftware.Services;
+using MMBSoftware.Views.ViewInterfaces;
 
 namespace MMBSoftware.Views.Dialogs
 {

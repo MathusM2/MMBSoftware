@@ -615,7 +615,6 @@
             dataGridClients.AllowUserToAddRows = false;
             dataGridClients.AllowUserToDeleteRows = false;
             dataGridClients.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridClients.Location = new Point(19, 35);
             dataGridClients.Margin = new Padding(3, 2, 3, 2);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MMBSoftware.Views.ViewInterfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +20,7 @@ namespace MMBSoftware.Views
         public CustomerView()
         {
             InitializeComponent();
+            ConfigureDataGridCustomer();
             AssociateAndRaiseViewEvents();
             tabControl1.TabPages.Remove(tabClientDetail);
             tabControl1.TabPages.Remove(tabClientAccount);

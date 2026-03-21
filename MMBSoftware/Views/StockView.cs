@@ -11,6 +11,7 @@ using MMBSoftware.Models;
 using MMBSoftware.Models.Enums;
 using MMBSoftware.Services;
 using MMBSoftware.Views.Dialogs;
+using MMBSoftware.Views.ViewInterfaces;
 
 namespace MMBSoftware.Views
 {
@@ -27,8 +28,9 @@ namespace MMBSoftware.Views
         public StockView()
         {
             InitializeComponent();
+            ConfigureDataGridStock();
             AssociateAndRaiseViewEvents();
-            tabControl1.TabPages.Remove(tabStockProduct);
+            tabStockEdit.TabPages.Remove(tabStockRegEdit);
             cbFieldTypeUnit.DataSource = UnitTypeToStringExtensions.GetAllUnitTypes();
         }
 
@@ -37,16 +39,16 @@ namespace MMBSoftware.Views
             //Add
             btnAdd.Click += delegate
             {
-                tabControl1.TabPages.Remove(tabStockList);
-                tabControl1.TabPages.Add(tabStockProduct);
+                tabStockEdit.TabPages.Remove(tabStockList);
+                tabStockEdit.TabPages.Add(tabStockRegEdit);
                 AddEvent?.Invoke(this, EventArgs.Empty);
                 tabPdDetailTitle.Text = "Add New Stock registration";
             };
             //Edit
             btnEdit.Click += delegate
             {
-                tabControl1.TabPages.Remove(tabStockList);
-                tabControl1.TabPages.Add(tabStockProduct);
+                tabStockEdit.TabPages.Remove(tabStockList);
+                tabStockEdit.TabPages.Add(tabStockRegEdit);
                 cbFieldProduct.MouseDown += (s, e) =>
                 {
                     if (IsEdit)
@@ -62,8 +64,8 @@ namespace MMBSoftware.Views
             btnDetailCancel.Click += delegate
             {
                 CancelEvent?.Invoke(this, EventArgs.Empty);
-                tabControl1.TabPages.Remove(tabStockProduct);
-                tabControl1.TabPages.Add(tabStockList);
+                tabStockEdit.TabPages.Remove(tabStockRegEdit);
+                tabStockEdit.TabPages.Add(tabStockList);
             };
 
             //Selected Product
@@ -80,8 +82,8 @@ namespace MMBSoftware.Views
                 await Task.Delay(300);
                 if (IsSuccessful)
                 {
-                    tabControl1.TabPages.Remove(tabStockProduct);
-                    tabControl1.TabPages.Add(tabStockList);
+                    tabStockEdit.TabPages.Remove(tabStockRegEdit);
+                    tabStockEdit.TabPages.Add(tabStockList);
                     MessageBox.Show(Message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     btnDetailSave.Enabled = true;
                 }

@@ -24,9 +24,10 @@ namespace MMBSoftware.Repositories
                 connection.Open();
                 command.Connection = connection;
                 command.CommandText = @"INSERT INTO Product
-                                        (Product_Name, Product_Description, Product_Category, Product_Price)
-                                        VALUES (@name, @description, @category, @price) ";
+                                        (Product_Name, Product_Barcode, Product_Description, Product_Category, Product_Price)
+                                        VALUES (@name, @barcode, @description, @category, @price) ";
                 command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product.Name;
+                command.Parameters.Add("@barcode", MySqlDbType.VarChar).Value = product.Barcode;
                 command.Parameters.Add("@description", MySqlDbType.VarChar).Value = product.Description;
                 command.Parameters.Add("@category", MySqlDbType.VarChar).Value = product.Category;
                 command.Parameters.Add("@price", MySqlDbType.Decimal).Value = product.Price;
@@ -49,12 +50,14 @@ namespace MMBSoftware.Repositories
                 command.Connection = connection;
                 command.CommandText = @"UPDATE Product                                      
                                         SET Product_Name = @name,
+                                            Product_Barcode = @barcode, 
                                             Product_Description = @description,
                                             Product_Category = @category,
                                             Product_Price = @price
                                         WHERE (Product_Id = @id)";
                 command.Parameters.Add("@id", MySqlDbType.Int32).Value = product.Id;
                 command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product.Name;
+                command.Parameters.Add("@barcode", MySqlDbType.VarChar).Value = product.Barcode;
                 command.Parameters.Add("@description", MySqlDbType.VarChar).Value = product.Description;
                 command.Parameters.Add("@category", MySqlDbType.VarChar).Value = product.Category;
                 command.Parameters.Add("@price", MySqlDbType.Decimal).Value = product.Price;
@@ -109,7 +112,7 @@ namespace MMBSoftware.Repositories
                             productModel.Description = reader[2].ToString();
                             productModel.Category = reader[3].ToString();
                             productModel.Price = (decimal)reader[4];
-
+                            productModel.Barcode = reader[5].ToString();
                             productList.Add(productModel);
                         }
 
@@ -127,6 +130,7 @@ namespace MMBSoftware.Repositories
             var productList = new List<Product>();
             int product_Id = int.TryParse(value, out _) ? Convert.ToInt32(value) : 0;
             string product_Name = value;
+            string product_barcode = value;
             using (var connection = new MySqlConnection(connectionString))
             using (var command = new MySqlCommand())
             {
@@ -135,9 +139,11 @@ namespace MMBSoftware.Repositories
                 command.CommandText = @"SELECT * FROM Product
                                       WHERE Product_Id = @id
                                       OR Product_Name LIKE @name
+                                      OR Product_Barcode = @barcode
                                       ORDER BY Product_Id desc ";
                 command.Parameters.Add("@id", MySqlDbType.Int32).Value = product_Id;
                 command.Parameters.Add("@name", MySqlDbType.VarChar).Value = product_Name + "%";
+                command.Parameters.Add("@barcode", MySqlDbType.VarChar).Value = product_barcode;
                 try
                 {
                     var reader = await command.ExecuteReaderAsync();
@@ -150,6 +156,8 @@ namespace MMBSoftware.Repositories
                         productModel.Description = reader[2].ToString();
                         productModel.Category = reader[3].ToString();
                         productModel.Price = (decimal)reader[4];
+                        productModel.Barcode = reader[5].ToString();
+                            ;
                         productList.Add(productModel);
 
                     }
